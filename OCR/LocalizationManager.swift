@@ -18,8 +18,13 @@ class LocalizationManager: ObservableObject {
         }
     }
 
-    @Published var language: Language {
-        didSet { UserDefaults.standard.set(language.rawValue, forKey: "appLanguage") }
+    @Published private(set) var language: Language
+
+    func setLanguage(_ lang: Language) {
+        DispatchQueue.main.async { [weak self] in
+            self?.language = lang
+            UserDefaults.standard.set(lang.rawValue, forKey: "appLanguage")
+        }
     }
 
     init() {

@@ -44,7 +44,10 @@ struct SettingsView: View {
             Section(lm.t("settings.language_section")) {
                 HStack {
                     Text(lm.t("settings.language_label"))
-                    Picker("", selection: $lm.language) {
+                    Picker("", selection: Binding(
+                        get: { lm.language },
+                        set: { lm.setLanguage($0) }
+                    )) {
                         ForEach(LocalizationManager.Language.allCases) { lang in
                             Text(lang.displayName).tag(lang)
                         }
