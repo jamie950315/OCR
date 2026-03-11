@@ -23,7 +23,7 @@ class AppState: ObservableObject {
     }
 
     var modelId: String {
-        get { UserDefaults.standard.string(forKey: "modelId") ?? "google/gemini-2.5-pro-preview" }
+        get { UserDefaults.standard.string(forKey: "modelId") ?? "google/gemini-3-flash-preview" }
         set { UserDefaults.standard.set(newValue, forKey: "modelId") }
     }
 

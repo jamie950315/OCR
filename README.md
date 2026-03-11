@@ -44,7 +44,7 @@ Access via menu bar icon → Settings... (or ⌘,)
 | Setting | Description | Default |
 |---------|-------------|---------|
 | API Key | Your OpenRouter API key | — |
-| Model ID | OpenRouter model identifier | `google/gemini-2.5-pro-preview` |
+| Model ID | OpenRouter model identifier | `google/gemini-3-flash-preview` |
 | Hotkey | Global keyboard shortcut | ⌃⌥O |
 | Language | UI language | 繁體中文 |
 
