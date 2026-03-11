@@ -64,7 +64,7 @@ class AppState: ObservableObject {
     func startCapture() {
         guard !isProcessing else { return }
         guard !apiKey.isEmpty else {
-            statusMessage = "請先設定 API Key"
+            statusMessage = LocalizationManager.shared.t("status.set_api_key")
             shouldOpenSettings = true
             return
         }
@@ -74,7 +74,7 @@ class AppState: ObservableObject {
             guard let self = self else { return }
             self.captureOverlay = nil
             if let image = image {
-                ToastWindow.shared.show(icon: "camera.viewfinder", message: "截圖成功，正在辨識...")
+                ToastWindow.shared.show(icon: "camera.viewfinder", message: LocalizationManager.shared.t("toast.capture_success"))
                 self.performOCR(on: image)
             }
         }
@@ -85,7 +85,7 @@ class AppState: ObservableObject {
 
     private func performOCR(on image: CGImage) {
         isProcessing = true
-        statusMessage = "正在辨識..."
+        statusMessage = LocalizationManager.shared.t("status.processing")
 
         Task {
             do {
@@ -96,24 +96,26 @@ class AppState: ObservableObject {
                 )
 
                 await MainActor.run {
+                    let lm = LocalizationManager.shared
                     if text.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
-                        statusMessage = "未偵測到文字"
-                        ToastWindow.shared.show(icon: "text.magnifyingglass", message: "未偵測到文字")
+                        statusMessage = lm.t("status.no_text")
+                        ToastWindow.shared.show(icon: "text.magnifyingglass", message: lm.t("toast.no_text"))
                     } else {
                         NSPasteboard.general.clearContents()
                         NSPasteboard.general.setString(text, forType: .string)
-                        statusMessage = "已複製到剪貼簿"
+                        statusMessage = lm.t("status.copied")
                         NSSound(named: .init("Submarine"))?.play()
-                        ToastWindow.shared.show(icon: "checkmark.circle.fill", message: "OCR 完成，已複製到剪貼簿")
+                        ToastWindow.shared.show(icon: "checkmark.circle.fill", message: lm.t("toast.ocr_complete"))
                     }
                     isProcessing = false
                     clearStatusAfterDelay()
                 }
             } catch {
                 await MainActor.run {
-                    statusMessage = "錯誤：\(error.localizedDescription)"
+                    let lm = LocalizationManager.shared
+                    statusMessage = lm.t("status.error", error.localizedDescription)
                     isProcessing = false
-                    ToastWindow.shared.show(icon: "xmark.circle.fill", message: "辨識失敗", duration: 3)
+                    ToastWindow.shared.show(icon: "xmark.circle.fill", message: lm.t("toast.ocr_failed"), duration: 3)
                     clearStatusAfterDelay(seconds: 5)
                 }
             }

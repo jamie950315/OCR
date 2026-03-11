@@ -3,6 +3,7 @@ import Carbon
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var lm: LocalizationManager
     @AppStorage("apiKey") private var apiKey = ""
     @AppStorage("modelId") private var modelId = "google/gemini-2.5-pro-preview"
     @State private var isRecordingHotkey = false
@@ -11,37 +12,50 @@ struct SettingsView: View {
 
     var body: some View {
         Form {
-            Section("API 設定") {
-                SecureField("OpenRouter API Key", text: $apiKey)
+            Section(lm.t("settings.api_section")) {
+                SecureField(lm.t("settings.api_key"), text: $apiKey)
                     .textFieldStyle(.roundedBorder)
 
-                TextField("模型 ID", text: $modelId)
+                TextField(lm.t("settings.model_id"), text: $modelId)
                     .textFieldStyle(.roundedBorder)
 
-                Text("預設：google/gemini-2.5-pro-preview")
+                Text(lm.t("settings.model_hint"))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
 
-            Section("快捷鍵") {
+            Section(lm.t("settings.hotkey_section")) {
                 HStack {
-                    Text("OCR 截圖快捷鍵：")
+                    Text(lm.t("settings.hotkey_label"))
 
                     Button(action: toggleRecording) {
-                        Text(isRecordingHotkey ? "請按下快捷鍵組合..." : hotkeyDisplay)
+                        Text(isRecordingHotkey ? lm.t("settings.press_shortcut") : hotkeyDisplay)
                             .frame(minWidth: 120)
                             .foregroundColor(isRecordingHotkey ? .red : .primary)
                     }
                     .buttonStyle(.bordered)
                 }
 
-                Text("需包含至少一個修飾鍵（⌃ Control / ⌥ Option / ⇧ Shift / ⌘ Command）")
+                Text(lm.t("settings.hotkey_hint"))
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
+
+            Section(lm.t("settings.language_section")) {
+                HStack {
+                    Text(lm.t("settings.language_label"))
+                    Picker("", selection: $lm.language) {
+                        ForEach(LocalizationManager.Language.allCases) { lang in
+                            Text(lang.displayName).tag(lang)
+                        }
+                    }
+                    .pickerStyle(.segmented)
+                    .labelsHidden()
+                }
+            }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 280)
+        .frame(width: 450, height: 340)
         .onAppear {
             hotkeyDisplay = appState.hotkeyDisplayString
         }

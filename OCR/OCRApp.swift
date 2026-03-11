@@ -4,11 +4,13 @@ import SwiftUI
 struct OCRApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var appDelegate
     @StateObject private var appState = AppState.shared
+    @StateObject private var lm = LocalizationManager.shared
 
     var body: some Scene {
         MenuBarExtra {
             MenuContentView()
                 .environmentObject(appState)
+                .environmentObject(lm)
         } label: {
             Image(systemName: "text.viewfinder")
         }
@@ -16,6 +18,7 @@ struct OCRApp: App {
         Settings {
             SettingsView()
                 .environmentObject(appState)
+                .environmentObject(lm)
         }
     }
 }
@@ -33,18 +36,19 @@ class AppDelegate: NSObject, NSApplicationDelegate {
 
 struct MenuContentView: View {
     @EnvironmentObject var appState: AppState
+    @EnvironmentObject var lm: LocalizationManager
     @Environment(\.openSettings) private var openSettings
 
     var body: some View {
         if appState.isProcessing {
-            Label("正在辨識中...", systemImage: "hourglass")
+            Label(lm.t("menu.processing"), systemImage: "hourglass")
         }
 
         if let message = appState.statusMessage {
             Text(message)
         }
 
-        Button("OCR 截圖 (\(appState.hotkeyDisplayString))") {
+        Button(lm.t("menu.ocr_capture", appState.hotkeyDisplayString)) {
             appState.startCapture()
         }
         .disabled(appState.isProcessing)
@@ -52,13 +56,13 @@ struct MenuContentView: View {
         Divider()
 
         SettingsLink {
-            Text("設定...")
+            Text(lm.t("menu.settings"))
         }
         .keyboardShortcut(",", modifiers: .command)
 
         Divider()
 
-        Button("結束") {
+        Button(lm.t("menu.quit")) {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q", modifiers: .command)

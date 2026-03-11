@@ -8,11 +8,12 @@ enum OCRError: LocalizedError {
     case noContent
 
     var errorDescription: String? {
+        let lm = LocalizationManager.shared
         switch self {
-        case .imageConversionFailed: return "圖片轉換失敗"
-        case .invalidResponse: return "無效的 API 回應"
+        case .imageConversionFailed: return lm.t("error.image_conversion")
+        case .invalidResponse:       return lm.t("error.invalid_response")
         case .apiError(let message): return message
-        case .noContent: return "API 回應中沒有內容"
+        case .noContent:             return lm.t("error.no_content")
         }
     }
 }

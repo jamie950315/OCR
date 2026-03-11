@@ -134,12 +134,13 @@ class ScreenCaptureOverlay {
     }
 
     private func showScreenRecordingAlert() {
+        let lm = LocalizationManager.shared
         let alert = NSAlert()
-        alert.messageText = "無法截取螢幕"
-        alert.informativeText = "請在「系統設定」>「隱私權與安全性」>「螢幕錄影」中允許此應用程式。"
+        alert.messageText = lm.t("alert.screen_capture_title")
+        alert.informativeText = lm.t("alert.screen_capture_message")
         alert.alertStyle = .warning
-        alert.addButton(withTitle: "開啟系統設定")
-        alert.addButton(withTitle: "取消")
+        alert.addButton(withTitle: lm.t("alert.open_settings"))
+        alert.addButton(withTitle: lm.t("alert.cancel"))
 
         if alert.runModal() == .alertFirstButtonReturn {
             if let url = URL(string: "x-apple.systempreferences:com.apple.preference.security?Privacy_ScreenCapture") {
