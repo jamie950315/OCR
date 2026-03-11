@@ -19,7 +19,7 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 - Requires explicit `import Combine` for `@Published`
 - `CGWindowListCreateImage` is unavailable — use ScreenCaptureKit (`SCScreenshotManager`)
 - Use `NSApp.activate(ignoringOtherApps:)` not `forIgnoringOtherApps:`
-- Use `SettingsLink` and `@Environment(\.openSettings)` to open Settings scene — do NOT use `NSApp.sendAction(showSettingsWindow:)`
+- Use `@Environment(\.openSettings)` to open Settings scene — do NOT use `NSApp.sendAction(showSettingsWindow:)`. For accessory apps, always call `NSApp.activate(ignoringOtherApps: true)` before `openSettings()` to bring the window to front. Use a plain `Button` instead of `SettingsLink` when you need to control activation order
 - Do NOT mutate `@Published` directly from a SwiftUI `Picker` binding — wrap in `DispatchQueue.main.async` to avoid "Publishing changes from within view updates" warnings
 
 ## Architecture

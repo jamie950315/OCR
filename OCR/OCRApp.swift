@@ -55,8 +55,9 @@ struct MenuContentView: View {
 
         Divider()
 
-        SettingsLink {
-            Text(lm.t("menu.settings"))
+        Button(lm.t("menu.settings")) {
+            NSApp.activate(ignoringOtherApps: true)
+            openSettings()
         }
         .keyboardShortcut(",", modifiers: .command)
 
@@ -69,6 +70,7 @@ struct MenuContentView: View {
         .onChange(of: appState.shouldOpenSettings) {
             if appState.shouldOpenSettings {
                 appState.shouldOpenSettings = false
+                NSApp.activate(ignoringOtherApps: true)
                 openSettings()
             }
         }

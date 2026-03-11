@@ -40,8 +40,8 @@ class LocalizationManager: ObservableObject {
     }
 
     init() {
-        let saved = UserDefaults.standard.string(forKey: "appLanguage") ?? "zh-TW"
-        language = Language(rawValue: saved) ?? .traditionalChinese
+        let saved = UserDefaults.standard.string(forKey: "appLanguage") ?? "en"
+        language = Language(rawValue: saved) ?? .english
     }
 
     func t(_ key: String, _ args: CVarArg...) -> String {
