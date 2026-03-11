@@ -4,6 +4,8 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
+**Official name: "Obviously Can't Remember" (OCR)** — the package/code identifier remains `OCR`, only the display name differs.
+
 macOS menu bar OCR application built with SwiftUI. Captures screen regions via user selection, sends images to OpenRouter API (Gemini model) for OCR, and auto-copies results to clipboard with toast notifications. Supports 8 languages with runtime switching.
 
 ## Build & Run

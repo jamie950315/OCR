@@ -1,4 +1,4 @@
-# OCR — macOS Menu Bar OCR Tool
+# Obviously Can't Remember (OCR) — macOS Menu Bar OCR Tool
 
 A lightweight macOS menu bar application that captures screen regions and performs OCR using OpenRouter API (Gemini model). Recognized text is automatically copied to your clipboard.
 
