@@ -10,6 +10,7 @@ A lightweight macOS menu bar application that captures screen regions and perfor
 - **Instant Clipboard** — OCR results are automatically copied
 - **Toast Notifications** — Visual feedback for capture, completion, and errors
 - **Multi-Display** — Works across all connected screens
+- **8 Languages** — English, 繁體中文, 简体中文, 日本語, 한국어, Español, Français, Deutsch
 
 ## Requirements
 
@@ -38,13 +39,14 @@ Press **Escape** to cancel a capture.
 
 ## Settings
 
-Access settings from the menu bar icon → 設定...
+Access via menu bar icon → Settings... (or ⌘,)
 
 | Setting | Description | Default |
 |---------|-------------|---------|
 | API Key | Your OpenRouter API key | — |
 | Model ID | OpenRouter model identifier | `google/gemini-2.5-pro-preview` |
 | Hotkey | Global keyboard shortcut | ⌃⌥O |
+| Language | UI language | 繁體中文 |
 
 ## Permissions
 

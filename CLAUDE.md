@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-macOS menu bar OCR application built with SwiftUI. Captures screen regions via user selection, sends images to OpenRouter API (Gemini model) for OCR, and auto-copies results to clipboard with toast notifications.
+macOS menu bar OCR application built with SwiftUI. Captures screen regions via user selection, sends images to OpenRouter API (Gemini model) for OCR, and auto-copies results to clipboard with toast notifications. Supports 8 languages with runtime switching.
 
 ## Build & Run
 
@@ -20,6 +20,7 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 - `CGWindowListCreateImage` is unavailable — use ScreenCaptureKit (`SCScreenshotManager`)
 - Use `NSApp.activate(ignoringOtherApps:)` not `forIgnoringOtherApps:`
 - Use `SettingsLink` and `@Environment(\.openSettings)` to open Settings scene — do NOT use `NSApp.sendAction(showSettingsWindow:)`
+- Do NOT mutate `@Published` directly from a SwiftUI `Picker` binding — wrap in `DispatchQueue.main.async` to avoid "Publishing changes from within view updates" warnings
 
 ## Architecture
 
@@ -28,13 +29,19 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 - `OCR/HotkeyManager.swift` — Global hotkey via Carbon `RegisterEventHotKey`. Converts between `NSEvent.ModifierFlags` and Carbon modifier constants
 - `OCR/ScreenCaptureOverlay.swift` — Full-screen transparent overlay windows for region selection. Uses ScreenCaptureKit (`SCScreenshotManager`) for capture. `OverlayWindow` subclass overrides `canBecomeKey` for keyboard events
 - `OCR/OpenRouterService.swift` — Sends base64-encoded PNG to `POST /api/v1/chat/completions` on OpenRouter
-- `OCR/SettingsView.swift` — SwiftUI `Settings` scene: API key, model ID, hotkey recorder via `NSEvent.addLocalMonitorForEvents`
+- `OCR/SettingsView.swift` — SwiftUI `Settings` scene: API key, model ID, hotkey recorder via `NSEvent.addLocalMonitorForEvents`, language picker
 - `OCR/ToastWindow.swift` — Floating `NSPanel` HUD for transient notifications (capture success, OCR complete, errors). Auto-dismisses with fade animation
+- `OCR/LocalizationManager.swift` — Singleton `ObservableObject` with embedded translation dictionaries. Call `lm.t("key")` or `lm.t("key", arg)` for localized strings. Language persisted in UserDefaults. Inject as `@EnvironmentObject` in SwiftUI views; access via `LocalizationManager.shared` in non-SwiftUI code
 - `OCR/OCR.entitlements` — App Sandbox with `com.apple.security.network.client` for API access
+
+## Supported Languages
+
+`en`, `zh-TW`, `zh-CN`, `ja`, `ko`, `es`, `fr`, `de`
 
 ## Key Patterns
 
 - Menu bar-only app: `NSApp.setActivationPolicy(.accessory)` in AppDelegate
 - Coordinate conversion: NSView (bottom-left origin) → CG screen coords (top-left origin) for ScreenCaptureKit `sourceRect`
 - Default hotkey: ⌃⌥O (Control+Option+O). Stored as Carbon keyCode/modifiers in UserDefaults
+- Adding a new language: add a case to `LocalizationManager.Language`, add a `displayName`, and add its translation dictionary in `translations`
 - Console messages from `AddInstanceForFactory`, `HALC_ProxyIOContext`, `FBSScene` are macOS system noise — safe to ignore
