@@ -1,10 +1,11 @@
-# Obviously Can't Remember (OCR) — macOS Menu Bar OCR Tool
+# Obviously Can't Remember (OCR)
+### macOS Menu Bar OCR Tool
 
 A lightweight macOS menu bar application that captures screen regions and performs OCR using OpenRouter API (Gemini model). Recognized text is automatically copied to your clipboard.
 
 ## Features
 
-- **Menu Bar App** — Lives in the menu bar, no dock icon
+- **Menu Bar App** — Lives in the menu bar, dock icon optional
 - **Region Selection** — Click and drag to select any area on screen
 - **Global Hotkey** — Default ⌃⌥O (Control+Option+O), fully customizable
 - **Instant Clipboard** — OCR results are automatically copied
@@ -48,6 +49,7 @@ Access via menu bar icon → Settings... (or ⌘,)
 | Model ID | OpenRouter model identifier | `google/gemini-3-flash-preview` |
 | Hotkey | Global keyboard shortcut | ⌃⌥O |
 | Launch at Login | Auto-start on login | Off |
+| Hide Dock Icon | Hide the app from the Dock | On |
 | Language | UI language | English |
 
 ## Permissions

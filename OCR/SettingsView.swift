@@ -11,6 +11,7 @@ struct SettingsView: View {
     @State private var hotkeyDisplay = ""
     @State private var monitor: Any?
     @State private var launchAtLogin = false
+    @State private var hideDockIcon = true
 
     var body: some View {
         Form {
@@ -56,6 +57,11 @@ struct SettingsView: View {
                             launchAtLogin = SMAppService.mainApp.status == .enabled
                         }
                     }
+
+                Toggle(lm.t("settings.hide_dock_icon"), isOn: $hideDockIcon)
+                    .onChange(of: hideDockIcon) {
+                        appState.hideDockIcon = hideDockIcon
+                    }
             }
 
             Section(lm.t("settings.language_section")) {
@@ -71,10 +77,11 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 420)
+        .frame(width: 450, height: 450)
         .onAppear {
             hotkeyDisplay = appState.hotkeyDisplayString
             launchAtLogin = SMAppService.mainApp.status == .enabled
+            hideDockIcon = appState.hideDockIcon
         }
         .onDisappear {
             stopRecording()

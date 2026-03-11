@@ -25,7 +25,7 @@ struct OCRApp: App {
 
 class AppDelegate: NSObject, NSApplicationDelegate {
     func applicationDidFinishLaunching(_ notification: Notification) {
-        NSApp.setActivationPolicy(.accessory)
+        AppState.shared.applyDockIconPolicy()
         AppState.shared.registerHotkey()
 
         if AppState.shared.apiKey.isEmpty {

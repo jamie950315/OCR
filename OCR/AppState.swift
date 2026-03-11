@@ -51,6 +51,24 @@ class AppState: ObservableObject {
         HotkeyManager.displayString(keyCode: hotkeyKeyCode, modifiers: hotkeyModifiers)
     }
 
+    var hideDockIcon: Bool {
+        get {
+            if UserDefaults.standard.object(forKey: "hideDockIcon") != nil {
+                return UserDefaults.standard.bool(forKey: "hideDockIcon")
+            }
+            return true // default: menu bar only
+        }
+        set {
+            UserDefaults.standard.set(newValue, forKey: "hideDockIcon")
+            objectWillChange.send()
+            applyDockIconPolicy()
+        }
+    }
+
+    func applyDockIconPolicy() {
+        NSApp.setActivationPolicy(hideDockIcon ? .accessory : .regular)
+    }
+
     // MARK: - Hotkey
 
     func registerHotkey() {
