@@ -10,6 +10,7 @@ A lightweight macOS menu bar application that captures screen regions and perfor
 - **Instant Clipboard** — OCR results are automatically copied
 - **Toast Notifications** — Visual feedback for capture, completion, and errors
 - **Multi-Display** — Works across all connected screens
+- **Launch at Login** — Optional auto-start when you log in
 - **8 Languages** — English, 繁體中文, 简体中文, 日本語, 한국어, Español, Français, Deutsch
 
 ## Requirements
@@ -46,6 +47,7 @@ Access via menu bar icon → Settings... (or ⌘,)
 | API Key | Your OpenRouter API key | — |
 | Model ID | OpenRouter model identifier | `google/gemini-3-flash-preview` |
 | Hotkey | Global keyboard shortcut | ⌃⌥O |
+| Launch at Login | Auto-start on login | Off |
 | Language | UI language | English |
 
 ## Permissions

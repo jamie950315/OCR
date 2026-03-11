@@ -1,5 +1,6 @@
 import SwiftUI
 import Carbon
+import ServiceManagement
 
 struct SettingsView: View {
     @EnvironmentObject var appState: AppState
@@ -9,6 +10,7 @@ struct SettingsView: View {
     @State private var isRecordingHotkey = false
     @State private var hotkeyDisplay = ""
     @State private var monitor: Any?
+    @State private var launchAtLogin = false
 
     var body: some View {
         Form {
@@ -41,6 +43,21 @@ struct SettingsView: View {
                     .foregroundColor(.secondary)
             }
 
+            Section(lm.t("settings.general_section")) {
+                Toggle(lm.t("settings.launch_at_login"), isOn: $launchAtLogin)
+                    .onChange(of: launchAtLogin) {
+                        do {
+                            if launchAtLogin {
+                                try SMAppService.mainApp.register()
+                            } else {
+                                try SMAppService.mainApp.unregister()
+                            }
+                        } catch {
+                            launchAtLogin = SMAppService.mainApp.status == .enabled
+                        }
+                    }
+            }
+
             Section(lm.t("settings.language_section")) {
                 Picker(lm.t("settings.language_label"), selection: Binding(
                     get: { lm.language },
@@ -54,9 +71,10 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 340)
+        .frame(width: 450, height: 420)
         .onAppear {
             hotkeyDisplay = appState.hotkeyDisplayString
+            launchAtLogin = SMAppService.mainApp.status == .enabled
         }
         .onDisappear {
             stopRecording()
