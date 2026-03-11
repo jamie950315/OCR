@@ -42,19 +42,15 @@ struct SettingsView: View {
             }
 
             Section(lm.t("settings.language_section")) {
-                HStack {
-                    Text(lm.t("settings.language_label"))
-                    Picker("", selection: Binding(
-                        get: { lm.language },
-                        set: { lm.setLanguage($0) }
-                    )) {
-                        ForEach(LocalizationManager.Language.allCases) { lang in
-                            Text(lang.displayName).tag(lang)
-                        }
+                Picker(lm.t("settings.language_label"), selection: Binding(
+                    get: { lm.language },
+                    set: { lm.setLanguage($0) }
+                )) {
+                    ForEach(LocalizationManager.Language.allCases) { lang in
+                        Text(lang.displayName).tag(lang)
                     }
-                    .pickerStyle(.segmented)
-                    .labelsHidden()
                 }
+                .pickerStyle(.menu)
             }
         }
         .formStyle(.grouped)
