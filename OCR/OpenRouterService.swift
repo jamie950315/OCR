@@ -56,7 +56,7 @@ struct OpenRouterService {
 
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
 
-        let (data, response) = try await URLSession.shared.data(for: request)
+        let (data, response) = try await Self.dataWithRetry(for: request)
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw OCRError.invalidResponse
@@ -83,5 +83,23 @@ struct OpenRouterService {
         }
 
         return content
+    }
+
+    private static func dataWithRetry(for request: URLRequest, maxAttempts: Int = 3) async throws -> (Data, URLResponse) {
+        var lastError: Error?
+        for attempt in 1...maxAttempts {
+            do {
+                return try await URLSession.shared.data(for: request)
+            } catch let error as URLError where error.code == .secureConnectionFailed
+                || error.code == .serverCertificateUntrusted
+                || error.code == .timedOut
+                || error.code == .networkConnectionLost {
+                lastError = error
+                if attempt < maxAttempts {
+                    try await Task.sleep(nanoseconds: UInt64(attempt) * 1_000_000_000)
+                }
+            }
+        }
+        throw lastError!
     }
 }

@@ -59,13 +59,13 @@ class ToastWindow {
         dismissTimer?.invalidate()
         dismissTimer = nil
 
-        guard let window = window else { return }
+        guard let panel = window else { return }
+        self.window = nil
         NSAnimationContext.runAnimationGroup({ context in
             context.duration = 0.3
-            window.animator().alphaValue = 0
-        }, completionHandler: { [weak self] in
-            window.orderOut(nil)
-            self?.window = nil
+            panel.animator().alphaValue = 0
+        }, completionHandler: {
+            panel.orderOut(nil)
         })
     }
 }
