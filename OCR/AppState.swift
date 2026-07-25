@@ -2,6 +2,11 @@ import SwiftUI
 import Combine
 import Carbon
 
+protocol CaptureOverlay: AnyObject {
+    var onComplete: ((CGImage?) -> Void)? { get set }
+    func show()
+}
+
 class AppState: ObservableObject {
     static let shared = AppState()
 
@@ -10,7 +15,12 @@ class AppState: ObservableObject {
     @Published var shouldOpenSettings = false
 
     private let hotkeyManager = HotkeyManager()
-    private var captureOverlay: ScreenCaptureOverlay?
+    private let captureOverlayFactory: () -> CaptureOverlay
+    private var captureOverlay: CaptureOverlay?
+
+    init(captureOverlayFactory: @escaping () -> CaptureOverlay = { ScreenCaptureOverlay() }) {
+        self.captureOverlayFactory = captureOverlayFactory
+    }
 
     // MARK: - Settings (UserDefaults backed)
 
@@ -80,15 +90,15 @@ class AppState: ObservableObject {
     // MARK: - Screen Capture
 
     func startCapture() {
-        guard !isProcessing else { return }
+        guard !isProcessing, captureOverlay == nil else { return }
         guard !apiKey.isEmpty else {
             statusMessage = LocalizationManager.shared.t("status.set_api_key")
             shouldOpenSettings = true
             return
         }
 
-        captureOverlay = ScreenCaptureOverlay()
-        captureOverlay?.onComplete = { [weak self] image in
+        let overlay = captureOverlayFactory()
+        overlay.onComplete = { [weak self] image in
             guard let self = self else { return }
             self.captureOverlay = nil
             if let image = image {
@@ -96,7 +106,8 @@ class AppState: ObservableObject {
                 self.performOCR(on: image)
             }
         }
-        captureOverlay?.show()
+        captureOverlay = overlay
+        overlay.show()
     }
 
     // MARK: - OCR

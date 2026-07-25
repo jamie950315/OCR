@@ -6,12 +6,19 @@ class OverlayWindow: NSWindow {
     override var canBecomeMain: Bool { true }
 }
 
-class ScreenCaptureOverlay {
+class ScreenCaptureOverlay: CaptureOverlay {
     var onComplete: ((CGImage?) -> Void)?
     private var windows: [NSWindow] = []
     private var escapeMonitor: Any?
+    private var isPresented = false
+
+    deinit {
+        cleanup()
+    }
 
     func show() {
+        guard !isPresented else { return }
+        isPresented = true
         NSCursor.crosshair.push()
 
         escapeMonitor = NSEvent.addLocalMonitorForEvents(matching: .keyDown) { [weak self] event in
@@ -106,6 +113,9 @@ class ScreenCaptureOverlay {
     }
 
     private func cleanup() {
+        guard isPresented else { return }
+        isPresented = false
+
         for window in windows {
             window.orderOut(nil)
         }
