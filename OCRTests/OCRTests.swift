@@ -23,7 +23,50 @@ private final class TestCaptureOverlay: CaptureOverlay {
     }
 }
 
+private func makeModelDefaults() -> (defaults: UserDefaults, suiteName: String) {
+    let suiteName = "OCRTests.\(UUID().uuidString)"
+    let defaults = UserDefaults(suiteName: suiteName)!
+    defaults.removePersistentDomain(forName: suiteName)
+    return (defaults, suiteName)
+}
+
 struct OCRTests {
+    @Test @MainActor func modelIDUsesFlashLiteByDefault() {
+        let (defaults, suiteName) = makeModelDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+
+        #expect(AppState(modelDefaults: defaults).modelId == AppState.defaultModelId)
+    }
+
+    @Test @MainActor func modelIDMigratesThePreviousDefaultToFlashLite() {
+        let (defaults, suiteName) = makeModelDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        defaults.set("google/gemini-3-flash-preview", forKey: "modelId")
+
+        _ = AppState(modelDefaults: defaults)
+
+        #expect(defaults.string(forKey: "modelId") == AppState.defaultModelId)
+    }
+
+    @Test @MainActor func modelIDPreservesCustomModel() {
+        let (defaults, suiteName) = makeModelDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let customModelID = "openai/gpt-5"
+        defaults.set(customModelID, forKey: "modelId")
+
+        #expect(AppState(modelDefaults: defaults).modelId == customModelID)
+    }
+
+    @Test @MainActor func modelIDAllowsChoosingThePreviousModelAfterMigration() {
+        let (defaults, suiteName) = makeModelDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        defaults.set("google/gemini-3-flash-preview", forKey: "modelId")
+        _ = AppState(modelDefaults: defaults)
+        defaults.set("google/gemini-3-flash-preview", forKey: "modelId")
+
+        #expect(AppState(modelDefaults: defaults).modelId == "google/gemini-3-flash-preview")
+    }
+
     @Test @MainActor func duplicateCaptureShortcutIsIgnoredUntilSelectionCompletes() {
         let defaults = UserDefaults.standard
         let previousAPIKey = defaults.object(forKey: "apiKey")
