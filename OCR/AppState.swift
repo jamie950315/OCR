@@ -9,17 +9,26 @@ protocol CaptureOverlay: AnyObject {
 
 class AppState: ObservableObject {
     static let shared = AppState()
+    static let defaultModelId = "google/gemini-3.5-flash-lite"
+    private static let previousDefaultModelId = "google/gemini-3-flash-preview"
+    private static let modelMigrationKey = "modelIdMigratedToGemini35FlashLite"
 
     @Published var isProcessing = false
     @Published var statusMessage: String?
     @Published var shouldOpenSettings = false
 
     private let hotkeyManager = HotkeyManager()
+    private let modelDefaults: UserDefaults
     private let captureOverlayFactory: () -> CaptureOverlay
     private var captureOverlay: CaptureOverlay?
 
-    init(captureOverlayFactory: @escaping () -> CaptureOverlay = { ScreenCaptureOverlay() }) {
+    init(
+        modelDefaults: UserDefaults = .standard,
+        captureOverlayFactory: @escaping () -> CaptureOverlay = { ScreenCaptureOverlay() }
+    ) {
+        self.modelDefaults = modelDefaults
         self.captureOverlayFactory = captureOverlayFactory
+        migrateDefaultModelIfNeeded()
     }
 
     // MARK: - Settings (UserDefaults backed)
@@ -33,8 +42,17 @@ class AppState: ObservableObject {
     }
 
     var modelId: String {
-        get { UserDefaults.standard.string(forKey: "modelId") ?? "google/gemini-3.5-flash-lite" }
-        set { UserDefaults.standard.set(newValue, forKey: "modelId") }
+        get { modelDefaults.string(forKey: "modelId") ?? Self.defaultModelId }
+        set { modelDefaults.set(newValue, forKey: "modelId") }
+    }
+
+    private func migrateDefaultModelIfNeeded() {
+        guard !modelDefaults.bool(forKey: Self.modelMigrationKey) else { return }
+
+        if modelDefaults.string(forKey: "modelId") == Self.previousDefaultModelId {
+            modelDefaults.set(Self.defaultModelId, forKey: "modelId")
+        }
+        modelDefaults.set(true, forKey: Self.modelMigrationKey)
     }
 
     var hotkeyKeyCode: UInt32 {
