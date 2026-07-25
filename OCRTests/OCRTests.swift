@@ -6,12 +6,47 @@
 //
 
 import Testing
+import CoreGraphics
+import Foundation
 @testable import OCR
 
-struct OCRTests {
+private final class TestCaptureOverlay: CaptureOverlay {
+    var onComplete: ((CGImage?) -> Void)?
+    private(set) var showCount = 0
 
-    @Test func example() async throws {
-        // Write your test here and use APIs like `#expect(...)` to check expected conditions.
+    func show() {
+        showCount += 1
     }
 
+    func complete() {
+        onComplete?(nil)
+    }
+}
+
+struct OCRTests {
+    @Test @MainActor func duplicateCaptureShortcutIsIgnoredUntilSelectionCompletes() {
+        let defaults = UserDefaults.standard
+        let previousAPIKey = defaults.object(forKey: "apiKey")
+        defer {
+            if let previousAPIKey {
+                defaults.set(previousAPIKey, forKey: "apiKey")
+            } else {
+                defaults.removeObject(forKey: "apiKey")
+            }
+        }
+
+        let overlay = TestCaptureOverlay()
+        let appState = AppState(captureOverlayFactory: { overlay })
+        appState.apiKey = "test-key"
+
+        appState.startCapture()
+        appState.startCapture()
+
+        #expect(overlay.showCount == 1)
+
+        overlay.complete()
+        appState.startCapture()
+
+        #expect(overlay.showCount == 2)
+    }
 }
