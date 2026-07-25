@@ -24,6 +24,21 @@ private final class TestCaptureOverlay: CaptureOverlay {
 }
 
 struct OCRTests {
+    @Test @MainActor func modelIDUsesFlashLiteByDefault() {
+        let defaults = UserDefaults.standard
+        let previousModelID = defaults.object(forKey: "modelId")
+        defaults.removeObject(forKey: "modelId")
+        defer {
+            if let previousModelID {
+                defaults.set(previousModelID, forKey: "modelId")
+            } else {
+                defaults.removeObject(forKey: "modelId")
+            }
+        }
+
+        #expect(AppState().modelId == "google/gemini-3.5-flash-lite")
+    }
+
     @Test @MainActor func duplicateCaptureShortcutIsIgnoredUntilSelectionCompletes() {
         let defaults = UserDefaults.standard
         let previousAPIKey = defaults.object(forKey: "apiKey")

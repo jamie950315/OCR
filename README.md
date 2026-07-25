@@ -46,7 +46,7 @@ Access via menu bar icon → Settings... (or ⌘,)
 | Setting | Description | Default |
 |---------|-------------|---------|
 | API Key | Your OpenRouter API key | — |
-| Model ID | OpenRouter model identifier | `google/gemini-3-flash-preview` |
+| Model ID | OpenRouter model identifier | `google/gemini-3.5-flash-lite` |
 | Hotkey | Global keyboard shortcut | ⌃⌥O |
 | Launch at Login | Auto-start on login | Off |
 | Hide Dock Icon | Hide the app from the Dock | On |

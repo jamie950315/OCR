@@ -6,7 +6,7 @@ struct SettingsView: View {
     @EnvironmentObject var appState: AppState
     @EnvironmentObject var lm: LocalizationManager
     @AppStorage("apiKey") private var apiKey = ""
-    @AppStorage("modelId") private var modelId = "google/gemini-3-flash-preview"
+    @AppStorage("modelId") private var modelId = "google/gemini-3.5-flash-lite"
     @State private var isRecordingHotkey = false
     @State private var hotkeyDisplay = ""
     @State private var monitor: Any?

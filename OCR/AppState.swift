@@ -33,7 +33,7 @@ class AppState: ObservableObject {
     }
 
     var modelId: String {
-        get { UserDefaults.standard.string(forKey: "modelId") ?? "google/gemini-3-flash-preview" }
+        get { UserDefaults.standard.string(forKey: "modelId") ?? "google/gemini-3.5-flash-lite" }
         set { UserDefaults.standard.set(newValue, forKey: "modelId") }
     }
 
