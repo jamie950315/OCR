@@ -1,0 +1,1600 @@
+{
+  "id": "765ac1b46e0859a2d6411e8da9c5a3bd5b35491e452399590c80eec130e1803b",
+  "title": "OCR 50 — Synthetic Document Benchmark",
+  "description": "50 artificial, controlled images covering tables, mixed documents, code, multilingual text, interface text, mathematics, and a no-text image. Strict transcription and Markdown structure checks are not a general-world accuracy estimate. No historical model responses are included.",
+  "problems": [
+    {
+      "id": "english_grid",
+      "title": "English Grid",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "english_grid.png",
+      "tables": [
+        [
+          [
+            "Item",
+            "Quantity",
+            "Price",
+            "Status"
+          ],
+          [
+            "Keyboard",
+            "2",
+            "$123.45",
+            "Ready"
+          ],
+          [
+            "Monitor",
+            "1",
+            "$699.00",
+            ""
+          ],
+          [
+            "USB cable",
+            "12",
+            "$8.50",
+            "Backorder"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "chinese_grid",
+      "title": "Chinese Grid",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "chinese_grid.png",
+      "tables": [
+        [
+          [
+            "品項",
+            "數量",
+            "單價",
+            "備註"
+          ],
+          [
+            "機械鍵盤",
+            "2",
+            "NT$1,234",
+            "已出貨"
+          ],
+          [
+            "螢幕",
+            "1",
+            "NT$9,800",
+            ""
+          ],
+          [
+            "傳輸線",
+            "12",
+            "NT$250",
+            "待補貨"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "english_borderless",
+      "title": "English Borderless",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "english_borderless.png",
+      "tables": [
+        [
+          [
+            "Item",
+            "Quantity",
+            "Price",
+            "Status"
+          ],
+          [
+            "Keyboard",
+            "2",
+            "$123.45",
+            "Ready"
+          ],
+          [
+            "Monitor",
+            "1",
+            "$699.00",
+            ""
+          ],
+          [
+            "USB cable",
+            "12",
+            "$8.50",
+            "Backorder"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "chinese_dark",
+      "title": "Chinese Dark",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "chinese_dark.png",
+      "tables": [
+        [
+          [
+            "品項",
+            "數量",
+            "單價",
+            "備註"
+          ],
+          [
+            "機械鍵盤",
+            "2",
+            "NT$1,234",
+            "已出貨"
+          ],
+          [
+            "螢幕",
+            "1",
+            "NT$9,800",
+            ""
+          ],
+          [
+            "傳輸線",
+            "12",
+            "NT$250",
+            "待補貨"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "chinese_small",
+      "title": "Chinese Small",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "chinese_small.png",
+      "tables": [
+        [
+          [
+            "品項",
+            "數量",
+            "單價",
+            "備註"
+          ],
+          [
+            "機械鍵盤",
+            "2",
+            "NT$1,234",
+            "已出貨"
+          ],
+          [
+            "螢幕",
+            "1",
+            "NT$9,800",
+            ""
+          ],
+          [
+            "傳輸線",
+            "12",
+            "NT$250",
+            "待補貨"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "multiline",
+      "title": "Multiline",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "multiline.png",
+      "tables": [
+        [
+          [
+            "Item",
+            "Quantity",
+            "Price",
+            "Status"
+          ],
+          [
+            "Mechanical\nkeyboard",
+            "2",
+            "$123.45",
+            "Ready"
+          ],
+          [
+            "Monitor",
+            "1",
+            "$699.00",
+            ""
+          ],
+          [
+            "USB cable",
+            "12",
+            "$8.50",
+            "Expected\nnext week"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "literal_pipe",
+      "title": "Literal Pipe",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "literal_pipe.png",
+      "tables": [
+        [
+          [
+            "Item",
+            "Quantity",
+            "Price",
+            "Status"
+          ],
+          [
+            "A | B",
+            "2",
+            "$123.45",
+            "Ready"
+          ],
+          [
+            "Monitor",
+            "1",
+            "$699.00",
+            "x < y & z"
+          ],
+          [
+            "USB cable",
+            "12",
+            "$8.50",
+            "Backorder"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "merged",
+      "title": "Merged",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "merged.png",
+      "tables": [
+        [
+          [
+            "Item",
+            "Quantity",
+            "Price",
+            "Status"
+          ],
+          [
+            "Keyboard",
+            "2",
+            "$123.45",
+            "Shared"
+          ],
+          [
+            "Monitor",
+            "1",
+            "$699.00",
+            ""
+          ],
+          [
+            "USB cable",
+            "12",
+            "$8.50",
+            "Backorder"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "dense_inventory",
+      "title": "Dense Inventory",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "dense_inventory.png",
+      "tables": [
+        [
+          [
+            "SKU",
+            "品項",
+            "Qty",
+            "Unit",
+            "Discount",
+            "Total"
+          ],
+          [
+            "A-001",
+            "螢幕",
+            "1",
+            "NT$125",
+            "0%",
+            "NT$125"
+          ],
+          [
+            "A-002",
+            "滑鼠",
+            "2",
+            "NT$250",
+            "0%",
+            "NT$500"
+          ],
+          [
+            "A-003",
+            "傳輸線",
+            "3",
+            "NT$375",
+            "5%",
+            "NT$1125"
+          ],
+          [
+            "A-004",
+            "鍵盤",
+            "4",
+            "NT$500",
+            "0%",
+            "NT$2000"
+          ],
+          [
+            "A-005",
+            "螢幕",
+            "5",
+            "NT$625",
+            "0%",
+            "NT$3125"
+          ],
+          [
+            "A-006",
+            "滑鼠",
+            "6",
+            "NT$750",
+            "5%",
+            "NT$4500"
+          ],
+          [
+            "A-007",
+            "傳輸線",
+            "7",
+            "NT$875",
+            "0%",
+            "NT$6125"
+          ],
+          [
+            "A-008",
+            "鍵盤",
+            "8",
+            "NT$1000",
+            "0%",
+            "NT$8000"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "zh_borderless",
+      "title": "Zh Borderless",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "zh_borderless.png",
+      "tables": [
+        [
+          [
+            "項目",
+            "數量",
+            "金額",
+            "狀態"
+          ],
+          [
+            "無線鍵盤",
+            "2",
+            "NT$1,800",
+            "已付款"
+          ],
+          [
+            "螢幕支架",
+            "1",
+            "NT$950",
+            "待出貨"
+          ],
+          [
+            "USB 集線器",
+            "3",
+            "NT$1,500",
+            ""
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "low_contrast",
+      "title": "Low Contrast",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "low_contrast.png",
+      "tables": [
+        [
+          [
+            "項目",
+            "數量",
+            "金額",
+            "狀態"
+          ],
+          [
+            "無線鍵盤",
+            "2",
+            "NT$1,800",
+            "已付款"
+          ],
+          [
+            "螢幕支架",
+            "1",
+            "NT$950",
+            "待出貨"
+          ],
+          [
+            "USB 集線器",
+            "3",
+            "NT$1,500",
+            ""
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "multilingual_zebra",
+      "title": "Multilingual Zebra",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "multilingual_zebra.png",
+      "tables": [
+        [
+          [
+            "繁體中文",
+            "日本語",
+            "한국어",
+            "English"
+          ],
+          [
+            "鍵盤",
+            "キーボード",
+            "키보드",
+            "Keyboard"
+          ],
+          [
+            "螢幕",
+            "モニター",
+            "모니터",
+            "Monitor"
+          ],
+          [
+            "滑鼠",
+            "マウス",
+            "마우스",
+            "Mouse"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "numeric_formats",
+      "title": "Numeric Formats",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "numeric_formats.png",
+      "tables": [
+        [
+          [
+            "Code",
+            "Amount",
+            "Rate",
+            "Date"
+          ],
+          [
+            "00123",
+            "-1,234.50",
+            "0.05%",
+            "2026-09-20"
+          ],
+          [
+            "00007",
+            "(250.00)",
+            "12.5%",
+            "2026/10/01"
+          ],
+          [
+            "INV-09",
+            "€9.876,54",
+            "1:1000",
+            "09:05:03"
+          ],
+          [
+            "A-100",
+            "NT$0.00",
+            "≤ 3.0",
+            "2026.12.31"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "code_symbols",
+      "title": "Code Symbols",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "code_symbols.png",
+      "tables": [
+        [
+          [
+            "Name",
+            "Expression",
+            "Path"
+          ],
+          [
+            "pipe",
+            "a | b",
+            "src/main.swift"
+          ],
+          [
+            "compare",
+            "x <= y && y != z",
+            "C:\\Users\\demo"
+          ],
+          [
+            "markers",
+            "*literal* _text_",
+            "docs/[draft].md"
+          ],
+          [
+            "brackets",
+            "[a,b] -> {x: 1}",
+            "/tmp/a_b-c.txt"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "two_level_header",
+      "title": "Two Level Header",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "two_level_header.png",
+      "tables": [
+        [
+          [
+            "Region",
+            "Q1",
+            "",
+            "Q2",
+            ""
+          ],
+          [
+            "",
+            "Sales",
+            "Profit",
+            "Sales",
+            "Profit"
+          ],
+          [
+            "Taiwan",
+            "120",
+            "30",
+            "150",
+            "42"
+          ],
+          [
+            "Japan",
+            "210",
+            "58",
+            "230",
+            "61"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "merged_regions",
+      "title": "Merged Regions",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "merged_regions.png",
+      "tables": [
+        [
+          [
+            "Group",
+            "Product",
+            "Owner",
+            "Status"
+          ],
+          [
+            "Hardware",
+            "Keyboard",
+            "Jamie",
+            "Ready"
+          ],
+          [
+            "",
+            "Monitor",
+            "",
+            ""
+          ],
+          [
+            "",
+            "Mouse",
+            "Casey",
+            "Pending"
+          ],
+          [
+            "Software",
+            "Editor",
+            "Morgan",
+            "Active"
+          ],
+          [
+            "",
+            "Terminal",
+            "",
+            ""
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "two_tables",
+      "title": "Two Tables",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "two_tables.png",
+      "tables": [
+        [
+          [
+            "Item",
+            "Qty",
+            "Price"
+          ],
+          [
+            "Pen",
+            "3",
+            "$2.50"
+          ],
+          [
+            "Notebook",
+            "2",
+            "$6.00"
+          ]
+        ],
+        [
+          [
+            "Method",
+            "Amount",
+            "Status"
+          ],
+          [
+            "Card",
+            "$15.00",
+            "Paid"
+          ],
+          [
+            "Cash",
+            "$4.50",
+            "Paid"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Order details",
+        "Payments",
+        ""
+      ]
+    },
+    {
+      "id": "mixed_prose",
+      "title": "Mixed Prose",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "mixed_prose.png",
+      "tables": [
+        [
+          [
+            "項目",
+            "數量",
+            "金額",
+            "狀態"
+          ],
+          [
+            "無線鍵盤",
+            "2",
+            "NT$1,800",
+            "已付款"
+          ],
+          [
+            "螢幕支架",
+            "1",
+            "NT$950",
+            "待出貨"
+          ],
+          [
+            "USB 集線器",
+            "3",
+            "NT$1,500",
+            ""
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "採購清單 / Purchase summary 以下金額含稅，請核對品項與數量。",
+        "備註：缺貨商品將另行通知。 Contact: orders@example.test"
+      ]
+    },
+    {
+      "id": "sparse_grid",
+      "title": "Sparse Grid",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "sparse_grid.png",
+      "tables": [
+        [
+          [
+            "ID",
+            "Owner",
+            "Value",
+            "Note"
+          ],
+          [
+            "01",
+            "Alex",
+            "0",
+            ""
+          ],
+          [
+            "",
+            "",
+            "",
+            ""
+          ],
+          [
+            "03",
+            "",
+            "25",
+            "N/A"
+          ],
+          [
+            "04",
+            "Sam",
+            "",
+            "Pending"
+          ],
+          [
+            "05",
+            "",
+            "0",
+            ""
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "long_multiline",
+      "title": "Long Multiline",
+      "category": "original table",
+      "kind": "table",
+      "imageName": "long_multiline.png",
+      "tables": [
+        [
+          [
+            "項目",
+            "規格",
+            "備註"
+          ],
+          [
+            "機械鍵盤\n無線版本",
+            "USB-C\nBluetooth 5.3\n2.4 GHz",
+            "繁體中文配置\n附充電線"
+          ],
+          [
+            "螢幕支架\n雙螢幕",
+            "27–32 吋\n承重 2–9 kg",
+            "桌緣厚度\n10–80 mm"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "",
+        ""
+      ]
+    },
+    {
+      "id": "plain50_english_prose",
+      "title": "Plain50 English Prose",
+      "category": "English prose",
+      "kind": "plain",
+      "imageName": "plain50_english_prose.png",
+      "expectedText": "The library opens at nine every morning.\nPlease return borrowed books before Friday.\nA quiet corner is available for reading.",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_traditional_chinese",
+      "title": "Plain50 Traditional Chinese",
+      "category": "Traditional Chinese prose",
+      "kind": "plain",
+      "imageName": "plain50_traditional_chinese.png",
+      "expectedText": "今天下午三點，我們在圖書館見面。\n請攜帶筆記本，並提前十分鐘抵達。\n活動結束後，記得帶走自己的物品。",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_receipt",
+      "title": "Table50 Receipt",
+      "category": "retail receipt",
+      "kind": "table",
+      "imageName": "table50_receipt.png",
+      "tables": [
+        [
+          [
+            "品項",
+            "數量",
+            "單價",
+            "小計"
+          ],
+          [
+            "燕麥飲",
+            "2",
+            "45",
+            "90"
+          ],
+          [
+            "海苔飯糰",
+            "1",
+            "38",
+            "38"
+          ],
+          [
+            "購物袋",
+            "1",
+            "2",
+            "2"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "小島便利店\n交易序號 R-260921-008\n2026/09/21 08:42",
+        "總計 NT$130\n現金 NT$200\n找零 NT$70\n謝謝惠顧"
+      ]
+    },
+    {
+      "id": "plain50_japanese",
+      "title": "Plain50 Japanese",
+      "category": "Japanese prose",
+      "kind": "plain",
+      "imageName": "plain50_japanese.png",
+      "expectedText": "明日の会議は午前十時に始まります。\n資料を確認してから、受付にお越しください。\nご協力ありがとうございます。",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_korean",
+      "title": "Plain50 Korean",
+      "category": "Korean prose",
+      "kind": "plain",
+      "imageName": "plain50_korean.png",
+      "expectedText": "오늘 도서관은 오후 여섯 시에 문을 닫습니다.\n책을 반납한 후 조용히 나가 주세요.\n내일 다시 만나요.",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_invoice",
+      "title": "Table50 Invoice",
+      "category": "invoice",
+      "kind": "table",
+      "imageName": "table50_invoice.png",
+      "tables": [
+        [
+          [
+            "Description",
+            "Qty",
+            "Unit price",
+            "Amount"
+          ],
+          [
+            "Design review",
+            "3",
+            "$120.00",
+            "$360.00"
+          ],
+          [
+            "Icon license",
+            "1",
+            "$45.00",
+            "$45.00"
+          ],
+          [
+            "Support credit",
+            "1",
+            "-$20.00",
+            "-$20.00"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "INVOICE INV-0268\nCedar Studio / Customer: Finch Labs\nIssued: 2026-09-21   Due: 2026-10-05",
+        "Subtotal $385.00\nTax (5%) $19.25\nAmount due $404.25\nPayment reference: INV-0268"
+      ]
+    },
+    {
+      "id": "plain50_european_accents",
+      "title": "Plain50 European Accents",
+      "category": "European accented text",
+      "kind": "plain",
+      "imageName": "plain50_european_accents.png",
+      "expectedText": "Le café est fermé jusqu’à Noël.\nFünf größere Bücher stehen draußen.\nEl pingüino pidió azúcar y café.",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_mixed_zh_en",
+      "title": "Plain50 Mixed Zh En",
+      "category": "Mixed Chinese and English",
+      "kind": "plain",
+      "imageName": "plain50_mixed_zh_en.png",
+      "expectedText": "請在 Settings 開啟 Dark Mode。\n版本 v2.4.1 支援離線 OCR 辨識。\n完成後按 Save，檔案會存到 Downloads。",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_timetable",
+      "title": "Table50 Timetable",
+      "category": "transport schedule",
+      "kind": "table",
+      "imageName": "table50_timetable.png",
+      "tables": [
+        [
+          [
+            "Train",
+            "Origin",
+            "Departs",
+            "Arrives",
+            "Platform",
+            "Days"
+          ],
+          [
+            "L101",
+            "Harbor",
+            "06:05",
+            "07:18",
+            "2",
+            "Mon-Fri"
+          ],
+          [
+            "L103",
+            "Hilltown",
+            "06:22",
+            "07:46",
+            "4",
+            "Daily"
+          ],
+          [
+            "E205",
+            "Harbor",
+            "07:00",
+            "07:52",
+            "1",
+            "Sat-Sun"
+          ],
+          [
+            "L107",
+            "Westgate",
+            "07:14",
+            "08:35",
+            "3",
+            "Daily"
+          ],
+          [
+            "E209",
+            "Hilltown",
+            "08:03",
+            "08:57",
+            "1",
+            "Mon-Fri"
+          ],
+          [
+            "L111",
+            "Harbor",
+            "08:25",
+            "09:41",
+            "2",
+            "Daily"
+          ],
+          [
+            "E213",
+            "Westgate",
+            "09:00",
+            "09:48",
+            "1",
+            "Sat-Sun"
+          ],
+          [
+            "L115",
+            "Hilltown",
+            "09:32",
+            "10:56",
+            "4",
+            "Daily"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Eastbound departures / Central Station",
+        "All times local. Schedule effective 21 September 2026."
+      ]
+    },
+    {
+      "id": "plain50_swift_code",
+      "title": "Plain50 Swift Code",
+      "category": "Indented Swift code",
+      "kind": "plain",
+      "imageName": "plain50_swift_code.png",
+      "expectedText": "func greet(_ name: String) -> String {\n    let message = \"Hello, \\(name)!\"\n    if name.isEmpty {\n        return \"Guest\"\n    }\n    return message\n}",
+      "whitespace": "exact"
+    },
+    {
+      "id": "plain50_nested_json",
+      "title": "Plain50 Nested Json",
+      "category": "Nested JSON",
+      "kind": "plain",
+      "imageName": "plain50_nested_json.png",
+      "expectedText": "{\n  \"project\": \"demo\",\n  \"enabled\": true,\n  \"limits\": {\n    \"retries\": 3,\n    \"timeout_ms\": 1500\n  },\n  \"tags\": [\"local\", \"test\"]\n}",
+      "whitespace": "exact"
+    },
+    {
+      "id": "table50_statement",
+      "title": "Table50 Statement",
+      "category": "borderless statement",
+      "kind": "table",
+      "imageName": "table50_statement.png",
+      "tables": [
+        [
+          [
+            "Account",
+            "Debit",
+            "Credit",
+            "Balance"
+          ],
+          [
+            "Opening balance",
+            "",
+            "",
+            "1,250.00"
+          ],
+          [
+            "Office rent",
+            "600.00",
+            "",
+            "650.00"
+          ],
+          [
+            "Client payment",
+            "",
+            "980.00",
+            "1,630.00"
+          ],
+          [
+            "Service fee",
+            "12.50",
+            "",
+            "1,617.50"
+          ],
+          [
+            "Closing balance",
+            "",
+            "",
+            "1,617.50"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Cash ledger / September 2026",
+        "Currency: USD"
+      ]
+    },
+    {
+      "id": "plain50_terminal_output",
+      "title": "Plain50 Terminal Output",
+      "category": "Terminal output",
+      "kind": "plain",
+      "imageName": "plain50_terminal_output.png",
+      "expectedText": "$ make test\nRunning 12 tests...\nPASS: parser handles empty input\nPASS: renderer preserves line breaks\nResult: 12 passed, 0 failed (0.42s)",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_urls_ids",
+      "title": "Plain50 Urls Ids",
+      "category": "URLs email and identifiers",
+      "kind": "plain",
+      "imageName": "plain50_urls_ids.png",
+      "expectedText": "https://example.org/docs?q=OCR&lang=zh-TW\nhelp@example.org\nRequest ID: aB7x-2048-Qr9\nSHA prefix: 0a1b2c3d4e5f\nFile: report_2026-09-20.md",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_rotated",
+      "title": "Table50 Rotated",
+      "category": "rotated headers",
+      "kind": "table",
+      "imageName": "table50_rotated.png",
+      "tables": [
+        [
+          [
+            "Batch",
+            "Copper",
+            "Zinc",
+            "Lead"
+          ],
+          [
+            "B-01",
+            "12.4",
+            "3.1",
+            "0.02"
+          ],
+          [
+            "B-02",
+            "11.8",
+            "2.9",
+            "0.01"
+          ],
+          [
+            "B-03",
+            "13.0",
+            "3.4",
+            "0.03"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Material assay (%)",
+        "Method: XRF / Samples are synthetic."
+      ]
+    },
+    {
+      "id": "plain50_nested_list",
+      "title": "Plain50 Nested List",
+      "category": "Nested ordered list",
+      "kind": "plain",
+      "imageName": "plain50_nested_list.png",
+      "expectedText": "1. Prepare the workspace\n   a. Open the project\n   b. Check the settings\n2. Run the evaluation\n   a. Review each output\n   b. Save the results",
+      "whitespace": "exact"
+    },
+    {
+      "id": "plain50_unicode_checklist",
+      "title": "Plain50 Unicode Checklist",
+      "category": "Unicode checklist",
+      "kind": "plain",
+      "imageName": "plain50_unicode_checklist.png",
+      "expectedText": "☑ Download complete\n☐ Verify the archive\n☑ Local backup created\n☐ Restart the application",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_sections",
+      "title": "Table50 Sections",
+      "category": "three section tables",
+      "kind": "table",
+      "imageName": "table50_sections.png",
+      "tables": [
+        [
+          [
+            "Service",
+            "Plan"
+          ],
+          [
+            "Archive",
+            "Basic"
+          ],
+          [
+            "Search",
+            "Plus"
+          ]
+        ],
+        [
+          [
+            "Region",
+            "Latency"
+          ],
+          [
+            "North",
+            "28 ms"
+          ],
+          [
+            "South",
+            "35 ms"
+          ]
+        ],
+        [
+          [
+            "Severity",
+            "Count"
+          ],
+          [
+            "Warning",
+            "2"
+          ],
+          [
+            "Critical",
+            "0"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Operations snapshot\nSubscriptions",
+        "Regional latency",
+        "Alerts",
+        "Generated: 2026-09-21 11:30 UTC"
+      ]
+    },
+    {
+      "id": "plain50_form_labels",
+      "title": "Plain50 Form Labels",
+      "category": "Stacked form fields",
+      "kind": "plain",
+      "imageName": "plain50_form_labels.png",
+      "expectedText": "Application details\nFull name: Alex Chen\nReference number: DEMO-2026-041\nPreferred language: Traditional Chinese\nConsent: Optional\nNotes: Please contact me after 14:00.",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_ui_dialog",
+      "title": "Plain50 Ui Dialog",
+      "category": "Dialog text",
+      "kind": "plain",
+      "imageName": "plain50_ui_dialog.png",
+      "expectedText": "Unsaved changes\nYour document has been modified.\nDo you want to save before closing?\nSave changes\nDiscard changes\nCancel",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_datagrid",
+      "title": "Table50 Datagrid",
+      "category": "eight column grid",
+      "kind": "table",
+      "imageName": "table50_datagrid.png",
+      "tables": [
+        [
+          [
+            "ID",
+            "Name",
+            "Role",
+            "Zone",
+            "CPU",
+            "RAM",
+            "State",
+            "Age"
+          ],
+          [
+            "n01",
+            "birch",
+            "api",
+            "eu-1",
+            "18%",
+            "2.1G",
+            "Ready",
+            "3d"
+          ],
+          [
+            "n02",
+            "maple",
+            "job",
+            "us-2",
+            "72%",
+            "4.8G",
+            "Busy",
+            "12h"
+          ],
+          [
+            "n03",
+            "cedar",
+            "db",
+            "ap-1",
+            "35%",
+            "8.0G",
+            "Ready",
+            "9d"
+          ],
+          [
+            "n04",
+            "pine",
+            "api",
+            "eu-1",
+            "0%",
+            "0.0G",
+            "Down",
+            "7m"
+          ],
+          [
+            "n05",
+            "elm",
+            "cache",
+            "us-2",
+            "11%",
+            "1.4G",
+            "Ready",
+            "2d"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Compute nodes   5 results",
+        "Showing 1-5 of 5"
+      ]
+    },
+    {
+      "id": "plain50_tiny_text",
+      "title": "Plain50 Tiny Text",
+      "category": "Small type",
+      "kind": "plain",
+      "imageName": "plain50_tiny_text.png",
+      "expectedText": "Small print: This sample is for evaluation only.\nKeep the original file until verification is complete.\nReference: ZX-2048 / revision 3.2 / status: pending\n請確認所有文字與標點符號皆完整保留。",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_dark_terminal",
+      "title": "Plain50 Dark Terminal",
+      "category": "Dark terminal",
+      "kind": "plain",
+      "imageName": "plain50_dark_terminal.png",
+      "expectedText": "$ ./ocr-check --offline\n[INFO] Loading local resources\n[WARN] Cache directory is empty\n[OK] Ready in 128 ms\nExit status: 0",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_statistics",
+      "title": "Table50 Statistics",
+      "category": "statistical footnotes",
+      "kind": "table",
+      "imageName": "table50_statistics.png",
+      "tables": [
+        [
+          [
+            "Group",
+            "n",
+            "Mean ± SD",
+            "p value"
+          ],
+          [
+            "Control",
+            "48",
+            "12.4 ± 2.1",
+            "—"
+          ],
+          [
+            "Treatment A",
+            "51",
+            "10.8 ± 1.7",
+            "0.032*"
+          ],
+          [
+            "Treatment B",
+            "49",
+            "9.6 ± 1.5",
+            "<0.001**"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Table 2. Response time (seconds)",
+        "* p < 0.05; ** p < 0.01.\n— indicates not applicable.\nSD = standard deviation."
+      ]
+    },
+    {
+      "id": "plain50_rotated_text",
+      "title": "Plain50 Rotated Text",
+      "category": "Slightly rotated text",
+      "kind": "plain",
+      "imageName": "plain50_rotated_text.png",
+      "expectedText": "Please keep this receipt for your records.\nOrder number: DEMO-4821\nIssued on 20 September 2026.",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_unicode_math",
+      "title": "Plain50 Unicode Math",
+      "category": "Unicode mathematical expressions",
+      "kind": "plain",
+      "imageName": "plain50_unicode_math.png",
+      "expectedText": "x² + y² = r²\nα + β = π\n2 × 3 = 6; 12 ÷ 4 = 3\n0 ≤ p ≤ 1\n√16 = 4; 5 ≠ 7",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_dashboard",
+      "title": "Table50 Dashboard",
+      "category": "dark dashboard",
+      "kind": "table",
+      "imageName": "table50_dashboard.png",
+      "tables": [
+        [
+          [
+            "Metric",
+            "Current",
+            "Previous",
+            "Change"
+          ],
+          [
+            "Requests",
+            "12,480",
+            "11,920",
+            "+4.7%"
+          ],
+          [
+            "Errors",
+            "18",
+            "24",
+            "-25.0%"
+          ],
+          [
+            "P95 latency",
+            "142 ms",
+            "156 ms",
+            "-9.0%"
+          ],
+          [
+            "Availability",
+            "99.98%",
+            "99.95%",
+            "+0.03 pp"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "SERVICE HEALTH / Last 24 hours",
+        "Updated 11:45 UTC | Region: ap-east"
+      ]
+    },
+    {
+      "id": "plain50_two_columns",
+      "title": "Plain50 Two Columns",
+      "category": "Two-column article",
+      "kind": "plain",
+      "imageName": "plain50_two_columns.png",
+      "expectedText": "Morning\nThe park opens at sunrise.\nWalkers follow the river.\nBirds gather near the bridge.\nAfternoon\nThe market opens at noon.\nVisitors browse fresh fruit.\nShops close before sunset.",
+      "whitespace": "lines"
+    },
+    {
+      "id": "plain50_no_text",
+      "title": "Plain50 No Text",
+      "category": "no text",
+      "kind": "plain",
+      "imageName": "plain50_no_text.png",
+      "expectedText": "",
+      "whitespace": "lines"
+    },
+    {
+      "id": "table50_financial",
+      "title": "Table50 Financial",
+      "category": "hierarchical financial report",
+      "kind": "table",
+      "imageName": "table50_financial.png",
+      "tables": [
+        [
+          [
+            "Division",
+            "Metric",
+            "2025",
+            "",
+            "2026",
+            ""
+          ],
+          [
+            "",
+            "",
+            "H1",
+            "H2",
+            "H1",
+            "H2"
+          ],
+          [
+            "Consumer",
+            "Revenue",
+            "120",
+            "135",
+            "148",
+            "160"
+          ],
+          [
+            "",
+            "Costs",
+            "85",
+            "91",
+            "96",
+            "102"
+          ],
+          [
+            "",
+            "Margin",
+            "35",
+            "44",
+            "52",
+            "58"
+          ],
+          [
+            "Enterprise",
+            "Revenue",
+            "210",
+            "230",
+            "255",
+            "280"
+          ],
+          [
+            "",
+            "Costs",
+            "150",
+            "163",
+            "175",
+            "192"
+          ],
+          [
+            "",
+            "Margin",
+            "60",
+            "67",
+            "80",
+            "88"
+          ]
+        ]
+      ],
+      "proseGaps": [
+        "Division performance / USD thousands",
+        "Figures are unaudited."
+      ]
+    }
+  ]
+}

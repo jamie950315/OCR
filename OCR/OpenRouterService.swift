@@ -19,13 +19,24 @@ enum OCRError: LocalizedError {
 }
 
 struct OpenRouterService {
-    static func performOCR(image: CGImage, apiKey: String, model: String) async throws -> String {
-        let bitmapRep = NSBitmapImageRep(cgImage: image)
-        guard let pngData = bitmapRep.representation(using: .png, properties: [:]) else {
-            throw OCRError.imageConversionFailed
-        }
-        let base64String = pngData.base64EncodedString()
+    static let ocrPrompt = "Extract all text from this image faithfully. Return tables as GitHub-flavored Markdown tables, preserving the original row and column relationships, headers, empty cells, spelling, punctuation, and spaces within each cell. Preserve line breaks inside a cell using <br>. Escape literal pipe characters inside cells as \\|. For merged cells, put the content only in the top-left cell of the merged region and leave the other covered cells empty. For non-table content, preserve the original text and line breaks; do not convert it into a table. Preserve reading order when text and tables appear together. Return only the extracted content, without explanations or code fences. Do not invent or correct any text."
 
+    static func makeRequest(imageData: Data, apiKey: String, model: String,
+                            reasoning: ReasoningEffort, stream: Bool) throws -> URLRequest {
+        try makeChatRequest(content: [
+            ["type": "text", "text": ocrPrompt],
+            ["type": "image_url", "image_url": ["url": "data:image/png;base64,\(imageData.base64EncodedString())"]]
+        ], apiKey: apiKey, model: model, reasoning: reasoning, stream: stream)
+    }
+
+    static func makeChatRequest(content: [[String: Any]], apiKey: String, model: String,
+                                reasoning: ReasoningEffort, stream: Bool) throws -> URLRequest {
+        guard !apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw OCRError.apiError("An OpenRouter API key is required.")
+        }
+        guard !model.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
+            throw OCRError.apiError("A model ID is required.")
+        }
         let url = URL(string: "https://openrouter.ai/api/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -33,28 +44,31 @@ struct OpenRouterService {
         request.setValue("Bearer \(apiKey)", forHTTPHeaderField: "Authorization")
         request.timeoutInterval = 60
 
-        let body: [String: Any] = [
+        var body: [String: Any] = [
             "model": model,
             "messages": [
                 [
                     "role": "user",
-                    "content": [
-                        [
-                            "type": "text",
-                            "text": "Extract all text from this image faithfully. Return tables as GitHub-flavored Markdown tables, preserving the original row and column relationships, headers, empty cells, spelling, punctuation, and spaces within each cell. Preserve line breaks inside a cell using <br>. Escape literal pipe characters inside cells as \\|. For merged cells, put the content only in the top-left cell of the merged region and leave the other covered cells empty. For non-table content, preserve the original text and line breaks; do not convert it into a table. Preserve reading order when text and tables appear together. Return only the extracted content, without explanations or code fences. Do not invent or correct any text."
-                        ],
-                        [
-                            "type": "image_url",
-                            "image_url": [
-                                "url": "data:image/png;base64,\(base64String)"
-                            ]
-                        ]
-                    ]
+                    "content": content
                 ]
             ]
         ]
 
+        if let value = reasoning.requestValue { body["reasoning"] = value }
+        body["stream"] = stream
+        if stream { request.setValue("text/event-stream", forHTTPHeaderField: "Accept") }
         request.httpBody = try JSONSerialization.data(withJSONObject: body)
+        return request
+    }
+
+    static func performOCR(image: CGImage, apiKey: String, model: String,
+                           reasoning: ReasoningEffort = .low) async throws -> String {
+        let bitmapRep = NSBitmapImageRep(cgImage: image)
+        guard let pngData = bitmapRep.representation(using: .png, properties: [:]) else {
+            throw OCRError.imageConversionFailed
+        }
+        let request = try makeRequest(imageData: pngData, apiKey: apiKey, model: model,
+                                      reasoning: reasoning, stream: false)
 
         let (data, response) = try await Self.dataWithRetry(for: request)
 
@@ -68,7 +82,7 @@ struct OpenRouterService {
 
         if let error = json["error"] as? [String: Any],
            let message = error["message"] as? String {
-            throw OCRError.apiError(message)
+            throw OCRError.apiError(redacted(message, apiKey: apiKey))
         }
 
         guard httpResponse.statusCode == 200 else {
@@ -83,6 +97,10 @@ struct OpenRouterService {
         }
 
         return content
+    }
+
+    static func redacted(_ message: String, apiKey: String) -> String {
+        apiKey.isEmpty ? message : message.replacingOccurrences(of: apiKey, with: "[REDACTED]")
     }
 
     private static func dataWithRetry(for request: URLRequest, maxAttempts: Int = 3) async throws -> (Data, URLResponse) {

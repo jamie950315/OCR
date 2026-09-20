@@ -12,7 +12,8 @@ struct OCRApp: App {
                 .environmentObject(appState)
                 .environmentObject(lm)
         } label: {
-            Image(systemName: "text.viewfinder")
+            OCRStatusLabel()
+                .environmentObject(appState)
         }
 
         Settings {
@@ -31,6 +32,40 @@ class AppDelegate: NSObject, NSApplicationDelegate {
         if AppState.shared.apiKey.isEmpty {
             AppState.shared.shouldOpenSettings = true
         }
+    }
+
+    func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool {
+        if !flag { AppState.shared.shouldOpenSettings = true }
+        sender.activate(ignoringOtherApps: true)
+        return true
+    }
+
+    func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        let runner = BenchmarkWindowController.shared.runner
+        guard runner.isRunning else { return .terminateNow }
+        let alert = NSAlert()
+        alert.messageText = "Stop the benchmark and quit?"
+        alert.informativeText = "The active request and remaining problems will be cancelled. Unsaved results will be lost. Charges already incurred may still apply."
+        alert.addButton(withTitle: "Keep Running")
+        alert.addButton(withTitle: "Stop and Quit")
+        guard alert.runModal() == .alertSecondButtonReturn else { return .terminateCancel }
+        runner.cancel()
+        return .terminateNow
+    }
+}
+
+private struct OCRStatusLabel: View {
+    @EnvironmentObject var appState: AppState
+    @Environment(\.openSettings) private var openSettings
+
+    var body: some View {
+        Image(systemName: "text.viewfinder")
+            .onChange(of: appState.shouldOpenSettings, initial: true) {
+                guard appState.shouldOpenSettings else { return }
+                appState.shouldOpenSettings = false
+                NSApp.activate(ignoringOtherApps: true)
+                openSettings()
+            }
     }
 }
 
@@ -51,7 +86,7 @@ struct MenuContentView: View {
         Button(lm.t("menu.ocr_capture", appState.hotkeyDisplayString)) {
             appState.startCapture()
         }
-        .disabled(appState.isProcessing)
+        .disabled(appState.isProcessing || appState.isBenchmarkRunning)
 
         Divider()
 
@@ -67,12 +102,5 @@ struct MenuContentView: View {
             NSApplication.shared.terminate(nil)
         }
         .keyboardShortcut("q", modifiers: .command)
-        .onChange(of: appState.shouldOpenSettings) {
-            if appState.shouldOpenSettings {
-                appState.shouldOpenSettings = false
-                NSApp.activate(ignoringOtherApps: true)
-                openSettings()
-            }
-        }
     }
 }
