@@ -13,6 +13,7 @@ struct SettingsView: View {
     @State private var monitor: Any?
     @State private var launchAtLogin = false
     @State private var hideDockIcon = true
+    @StateObject private var configurationTest = ConfigurationTestController()
 
     var body: some View {
         Form {
@@ -20,12 +21,39 @@ struct SettingsView: View {
                 SecureField(lm.t("settings.api_key"), text: $apiKey)
                     .textFieldStyle(.roundedBorder)
 
-                TextField(lm.t("settings.model_id"), text: $modelId)
-                    .textFieldStyle(.roundedBorder)
+                HStack {
+                    TextField(lm.t("settings.model_id"), text: $modelId)
+                        .textFieldStyle(.roundedBorder)
+                    Button {
+                        if configurationTest.isTesting { configurationTest.invalidate() }
+                        else {
+                            configurationTest.start(apiKey: apiKey, model: modelId,
+                                reasoning: ReasoningEffort(rawValue: reasoningEffort) ?? .low)
+                        }
+                    } label: {
+                        HStack(spacing: 5) {
+                            if configurationTest.isTesting { ProgressView().controlSize(.mini) }
+                            Text(configurationTest.isTesting ? "Cancel" : "Test")
+                        }
+                    }
+                    .disabled(!configurationTest.isTesting && (apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || modelId.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty || appState.isBenchmarkRunning || appState.isCaptureActive))
+                    .help("Send one short prompt with this API key, model, and reasoning effort. Provider charges may apply.")
+                }
+
+                if let message = configurationTest.message {
+                    Text(message)
+                        .font(.caption)
+                        .foregroundStyle(configurationTest.isTesting ? Color.secondary : configurationTest.succeeded ? Color.green : Color.red)
+                        .textSelection(.enabled)
+                        .fixedSize(horizontal: false, vertical: true)
+                }
 
                 Text(lm.t("settings.model_hint"))
                     .font(.caption)
                     .foregroundColor(.secondary)
+
+                Text("Test checks a short text reply, not vision/OCR accuracy or the provider's internal reasoning strength.")
+                    .font(.caption).foregroundStyle(.secondary)
 
                 Picker("Reasoning effort", selection: $reasoningEffort) {
                     ForEach(ReasoningEffort.allCases) { effort in
@@ -46,7 +74,7 @@ struct SettingsView: View {
                         reasoning: ReasoningEffort(rawValue: reasoningEffort) ?? .low
                     )
                 }
-                .disabled(appState.isCaptureActive)
+                .disabled(appState.isCaptureActive || configurationTest.isTesting)
 
                 Text("Compare models using 50 built-in OCR problems. A separate window shows live responses and progress. API charges apply only when you start a run.")
                     .font(.caption)
@@ -110,11 +138,16 @@ struct SettingsView: View {
             hideDockIcon = appState.hideDockIcon
         }
         .onDisappear {
+            configurationTest.invalidate()
             stopRecording()
             appState.apiKey = apiKey
             appState.modelId = modelId
             appState.registerHotkey()
         }
+        .onChange(of: apiKey) { configurationTest.invalidate() }
+        .onChange(of: modelId) { configurationTest.invalidate() }
+        .onChange(of: reasoningEffort) { configurationTest.invalidate() }
+        .onChange(of: appState.isBenchmarkRunning) { if appState.isBenchmarkRunning { configurationTest.invalidate() } }
     }
 
     private func toggleRecording() {

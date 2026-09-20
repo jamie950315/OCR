@@ -57,6 +57,10 @@ Access via menu bar icon → Settings... (or ⌘,)
 
 On first launch after upgrading, saved previous Qwen3.8 Flash and legacy Gemini defaults migrate to Gemini 3.5 Flash Lite once. Other custom model IDs are preserved, and you can select a previous model again afterward. Existing reasoning choices are preserved; new installations default to Low.
 
+## Testing the Configuration
+
+The **Test** button beside Model ID sends one short text prompt using the current API key, model, and reasoning effort. Success requires the expected `OCR_OK` reply, not merely HTTP 200. The result is cleared when any tested setting changes. This checks request compatibility, not vision/OCR accuracy; a small provider charge may apply. Cancel or close Settings to stop an in-flight check.
+
 ## Benchmarking Models
 
 Open **Settings → Run Benchmark…**, review the model and reasoning effort, then start the run. The benchmark uploads 50 bundled synthetic images to OpenRouter; provider charges apply. It does not upload your screen captures or read your clipboard. Off is not supported by every model, including Gemini 3.5 Flash Lite.

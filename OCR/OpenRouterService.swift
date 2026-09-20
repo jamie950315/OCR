@@ -23,14 +23,20 @@ struct OpenRouterService {
 
     static func makeRequest(imageData: Data, apiKey: String, model: String,
                             reasoning: ReasoningEffort, stream: Bool) throws -> URLRequest {
+        try makeChatRequest(content: [
+            ["type": "text", "text": ocrPrompt],
+            ["type": "image_url", "image_url": ["url": "data:image/png;base64,\(imageData.base64EncodedString())"]]
+        ], apiKey: apiKey, model: model, reasoning: reasoning, stream: stream)
+    }
+
+    static func makeChatRequest(content: [[String: Any]], apiKey: String, model: String,
+                                reasoning: ReasoningEffort, stream: Bool) throws -> URLRequest {
         guard !apiKey.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw OCRError.apiError("An OpenRouter API key is required.")
         }
         guard !model.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty else {
             throw OCRError.apiError("A model ID is required.")
         }
-        let base64String = imageData.base64EncodedString()
-
         let url = URL(string: "https://openrouter.ai/api/v1/chat/completions")!
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
@@ -43,18 +49,7 @@ struct OpenRouterService {
             "messages": [
                 [
                     "role": "user",
-                    "content": [
-                        [
-                            "type": "text",
-                            "text": ocrPrompt
-                        ],
-                        [
-                            "type": "image_url",
-                            "image_url": [
-                                "url": "data:image/png;base64,\(base64String)"
-                            ]
-                        ]
-                    ]
+                    "content": content
                 ]
             ]
         ]

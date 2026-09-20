@@ -34,6 +34,7 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 - `OCR/OpenRouterService.swift` — Sends base64-encoded PNG to `POST /api/v1/chat/completions` on OpenRouter
   - OCR prompt requests GitHub-flavored Markdown for tables (escaped pipes, `<br>` for in-cell line breaks, merged content in the top-left cell only), while preserving non-table text and reading order. This is model-directed formatting, not deterministic table reconstruction.
 - `OCR/SettingsView.swift` — SwiftUI `Settings` scene: API key, model ID, hotkey recorder via `NSEvent.addLocalMonitorForEvents`, launch-at-login toggle via `SMAppService`, language picker
+- `OCR/ConfigurationTest.swift` — Single text-only configuration check beside Model ID. Uses the current reasoning mapping, requires a complete `OCR_OK` reply, never retries, redacts credentials, and invalidates late results when settings change or the check is cancelled. It does not establish OCR/vision capability.
 - `OCR/ToastWindow.swift` — Floating `NSPanel` HUD for transient notifications (capture success, OCR complete, errors). Auto-dismisses with fade animation
 - `OCR/LocalizationManager.swift` — Singleton `ObservableObject` with embedded translation dictionaries. Call `lm.t("key")` or `lm.t("key", arg)` for localized strings. Language persisted in UserDefaults. Inject as `@EnvironmentObject` in SwiftUI views; access via `LocalizationManager.shared` in non-SwiftUI code
 - `OCR/OCR.entitlements` — App Sandbox with `com.apple.security.network.client` for API access
