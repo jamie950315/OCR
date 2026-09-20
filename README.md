@@ -1,7 +1,7 @@
 # Obviously Can't Remember (OCR)
 ### macOS Menu Bar OCR Tool
 
-A lightweight macOS menu bar application that captures screen regions and performs OCR using OpenRouter API (Gemini model). Recognized text is automatically copied to your clipboard.
+A lightweight macOS menu bar application that captures screen regions and performs OCR using OpenRouter API (Qwen3.8 Flash by default). Recognized text is automatically copied to your clipboard.
 
 ## Features
 
@@ -47,11 +47,13 @@ Access via menu bar icon → Settings... (or ⌘,)
 | Setting | Description | Default |
 |---------|-------------|---------|
 | API Key | Your OpenRouter API key | — |
-| Model ID | OpenRouter model identifier | `google/gemini-3.5-flash-lite` |
+| Model ID | OpenRouter model identifier | `qwen/qwen3.8-flash` |
 | Hotkey | Global keyboard shortcut | ⌃⌥O |
 | Launch at Login | Auto-start on login | Off |
 | Hide Dock Icon | Hide the app from the Dock | On |
 | Language | UI language | English |
+
+On first launch after upgrading, saved previous Gemini defaults migrate to Qwen3.8 Flash once. Other custom model IDs are preserved, and you can select a previous model again afterward.
 
 ## Permissions
 

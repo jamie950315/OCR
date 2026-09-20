@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Official name: "Obviously Can't Remember" (OCR)** — the package/code identifier remains `OCR`, only the display name differs.
 
-macOS menu bar OCR application built with SwiftUI. Captures screen regions via user selection, sends images to OpenRouter API (Gemini model) for OCR, and auto-copies results to clipboard with toast notifications. Supports 8 languages with runtime switching.
+macOS menu bar OCR application built with SwiftUI. Captures screen regions via user selection, sends images to OpenRouter API (Qwen3.8 Flash by default) for OCR, and auto-copies results to clipboard with toast notifications. Supports 8 languages with runtime switching.
 
 ## Build & Run
 
@@ -28,6 +28,7 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 
 - `OCR/OCRApp.swift` — App entry point, `MenuBarExtra` menu bar UI, `AppDelegate` for activation policy & hotkey registration. Uses `@Environment(\.openSettings)` for programmatic settings open
 - `OCR/AppState.swift` — Singleton `ObservableObject` coordinating capture→OCR→clipboard flow. Settings stored in `UserDefaults`. Uses `shouldOpenSettings` flag to trigger settings from non-SwiftUI code
+  - Default model: `qwen/qwen3.8-flash`, with no routing suffix or provider override. One-time migration replaces saved previous Gemini defaults; custom model IDs and subsequent user choices are preserved.
 - `OCR/HotkeyManager.swift` — Global hotkey via Carbon `RegisterEventHotKey`. Converts between `NSEvent.ModifierFlags` and Carbon modifier constants
 - `OCR/ScreenCaptureOverlay.swift` — Full-screen transparent overlay windows for region selection. Uses ScreenCaptureKit (`SCScreenshotManager`) for capture. `OverlayWindow` subclass overrides `canBecomeKey` for keyboard events
 - `OCR/OpenRouterService.swift` — Sends base64-encoded PNG to `POST /api/v1/chat/completions` on OpenRouter
@@ -36,6 +37,14 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 - `OCR/ToastWindow.swift` — Floating `NSPanel` HUD for transient notifications (capture success, OCR complete, errors). Auto-dismisses with fade animation
 - `OCR/LocalizationManager.swift` — Singleton `ObservableObject` with embedded translation dictionaries. Call `lm.t("key")` or `lm.t("key", arg)` for localized strings. Language persisted in UserDefaults. Inject as `@EnvironmentObject` in SwiftUI views; access via `LocalizationManager.shared` in non-SwiftUI code
 - `OCR/OCR.entitlements` — App Sandbox with `com.apple.security.network.client` for API access
+
+## Release Packaging
+
+- Local install target: `/Applications/OCR.app`; retain the previous bundle outside the repository before replacement.
+- Build Release with `ARCHS="arm64 x86_64" ONLY_ACTIVE_ARCH=NO` for a universal macOS app, then verify both architectures and the code signature.
+- Publish a DMG, zipped `.app`, and SHA-256 checksums on GitHub. Current signing uses an Apple Development certificate; releases are not notarized and may trigger Gatekeeper warnings on other Macs.
+- Stage bundles outside cloud-synced folders (for example, `/tmp`); Finder/file-provider metadata can invalidate strict signature checks. Verify the app inside the final archives, not only the build output.
+- Reuse still-valid OCR acceptance evidence; verify changed settings/migrations, build identity, installed version, and published asset checksums for a release.
 
 ## Supported Languages
 

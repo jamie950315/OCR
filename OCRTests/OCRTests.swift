@@ -31,17 +31,19 @@ private func makeModelDefaults() -> (defaults: UserDefaults, suiteName: String) 
 }
 
 struct OCRTests {
-    @Test @MainActor func modelIDUsesFlashLiteByDefault() {
+    @Test @MainActor func modelIDUsesQwen38FlashByDefault() {
         let (defaults, suiteName) = makeModelDefaults()
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
-        #expect(AppState(modelDefaults: defaults).modelId == AppState.defaultModelId)
+        #expect(AppState(modelDefaults: defaults).modelId == "qwen/qwen3.8-flash")
     }
 
-    @Test @MainActor func modelIDMigratesThePreviousDefaultToFlashLite() {
+    @Test(arguments: ["google/gemini-3-flash-preview", "google/gemini-3.5-flash-lite"])
+    @MainActor func modelIDMigratesPreviousDefaultsToQwen38Flash(previousModel: String) {
         let (defaults, suiteName) = makeModelDefaults()
         defer { defaults.removePersistentDomain(forName: suiteName) }
-        defaults.set("google/gemini-3-flash-preview", forKey: "modelId")
+        defaults.set(previousModel, forKey: "modelId")
+        defaults.set(true, forKey: "modelIdMigratedToGemini35FlashLite")
 
         _ = AppState(modelDefaults: defaults)
 
@@ -57,14 +59,15 @@ struct OCRTests {
         #expect(AppState(modelDefaults: defaults).modelId == customModelID)
     }
 
-    @Test @MainActor func modelIDAllowsChoosingThePreviousModelAfterMigration() {
+    @Test(arguments: ["google/gemini-3-flash-preview", "google/gemini-3.5-flash-lite"])
+    @MainActor func modelIDAllowsChoosingPreviousModelsAfterMigration(previousModel: String) {
         let (defaults, suiteName) = makeModelDefaults()
         defer { defaults.removePersistentDomain(forName: suiteName) }
-        defaults.set("google/gemini-3-flash-preview", forKey: "modelId")
+        defaults.set(previousModel, forKey: "modelId")
         _ = AppState(modelDefaults: defaults)
-        defaults.set("google/gemini-3-flash-preview", forKey: "modelId")
+        defaults.set(previousModel, forKey: "modelId")
 
-        #expect(AppState(modelDefaults: defaults).modelId == "google/gemini-3-flash-preview")
+        #expect(AppState(modelDefaults: defaults).modelId == previousModel)
     }
 
     @Test @MainActor func duplicateCaptureShortcutIsIgnoredUntilSelectionCompletes() {

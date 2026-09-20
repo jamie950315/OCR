@@ -9,9 +9,12 @@ protocol CaptureOverlay: AnyObject {
 
 class AppState: ObservableObject {
     static let shared = AppState()
-    static let defaultModelId = "google/gemini-3.5-flash-lite"
-    private static let previousDefaultModelId = "google/gemini-3-flash-preview"
-    private static let modelMigrationKey = "modelIdMigratedToGemini35FlashLite"
+    static let defaultModelId = "qwen/qwen3.8-flash"
+    private static let previousDefaultModelIds = [
+        "google/gemini-3-flash-preview",
+        "google/gemini-3.5-flash-lite"
+    ]
+    private static let modelMigrationKey = "modelIdMigratedToQwen38Flash"
 
     @Published var isProcessing = false
     @Published var statusMessage: String?
@@ -49,7 +52,8 @@ class AppState: ObservableObject {
     private func migrateDefaultModelIfNeeded() {
         guard !modelDefaults.bool(forKey: Self.modelMigrationKey) else { return }
 
-        if modelDefaults.string(forKey: "modelId") == Self.previousDefaultModelId {
+        if let savedModel = modelDefaults.string(forKey: "modelId"),
+           Self.previousDefaultModelIds.contains(savedModel) {
             modelDefaults.set(Self.defaultModelId, forKey: "modelId")
         }
         modelDefaults.set(true, forKey: Self.modelMigrationKey)
