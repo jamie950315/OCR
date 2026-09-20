@@ -41,7 +41,7 @@ struct OpenRouterService {
                     "content": [
                         [
                             "type": "text",
-                            "text": "Extract all text from this image. Return only the raw text content, preserving the original structure and layout. Do not add any explanations, commentary, or formatting that isn't in the original image."
+                            "text": "Extract all text from this image faithfully. Return tables as GitHub-flavored Markdown tables, preserving the original row and column relationships, headers, empty cells, spelling, punctuation, and spaces within each cell. Preserve line breaks inside a cell using <br>. Escape literal pipe characters inside cells as \\|. For merged cells, put the content only in the top-left cell of the merged region and leave the other covered cells empty. For non-table content, preserve the original text and line breaks; do not convert it into a table. Preserve reading order when text and tables appear together. Return only the extracted content, without explanations or code fences. Do not invent or correct any text."
                         ],
                         [
                             "type": "image_url",

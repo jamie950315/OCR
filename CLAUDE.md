@@ -31,6 +31,7 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 - `OCR/HotkeyManager.swift` — Global hotkey via Carbon `RegisterEventHotKey`. Converts between `NSEvent.ModifierFlags` and Carbon modifier constants
 - `OCR/ScreenCaptureOverlay.swift` — Full-screen transparent overlay windows for region selection. Uses ScreenCaptureKit (`SCScreenshotManager`) for capture. `OverlayWindow` subclass overrides `canBecomeKey` for keyboard events
 - `OCR/OpenRouterService.swift` — Sends base64-encoded PNG to `POST /api/v1/chat/completions` on OpenRouter
+  - OCR prompt requests GitHub-flavored Markdown for tables (escaped pipes, `<br>` for in-cell line breaks, merged content in the top-left cell only), while preserving non-table text and reading order. This is model-directed formatting, not deterministic table reconstruction.
 - `OCR/SettingsView.swift` — SwiftUI `Settings` scene: API key, model ID, hotkey recorder via `NSEvent.addLocalMonitorForEvents`, launch-at-login toggle via `SMAppService`, language picker
 - `OCR/ToastWindow.swift` — Floating `NSPanel` HUD for transient notifications (capture success, OCR complete, errors). Auto-dismisses with fade animation
 - `OCR/LocalizationManager.swift` — Singleton `ObservableObject` with embedded translation dictionaries. Call `lm.t("key")` or `lm.t("key", arg)` for localized strings. Language persisted in UserDefaults. Inject as `@EnvironmentObject` in SwiftUI views; access via `LocalizationManager.shared` in non-SwiftUI code

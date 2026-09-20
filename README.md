@@ -9,6 +9,7 @@ A lightweight macOS menu bar application that captures screen regions and perfor
 - **Region Selection** — Click and drag to select any area on screen
 - **Global Hotkey** — Default ⌃⌥O (Control+Option+O), fully customizable
 - **Instant Clipboard** — OCR results are automatically copied
+- **Markdown Tables** — Tables retain their rows, columns, and empty cells; in-cell line breaks use `<br>`, and merged-cell content stays in the top-left cell. Non-table text keeps its original line breaks.
 - **Toast Notifications** — Visual feedback for capture, completion, and errors
 - **Multi-Display** — Works across all connected screens
 - **Launch at Login** — Optional auto-start when you log in
