@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Official name: "Obviously Can't Remember" (OCR)** — the package/code identifier remains `OCR`, only the display name differs.
 
-macOS menu bar OCR application built with SwiftUI. Captures screen regions via user selection, sends images to OpenRouter API (Qwen3.8 Flash by default) for OCR, and auto-copies results to clipboard with toast notifications. Supports 8 languages with runtime switching.
+macOS menu bar OCR application built with SwiftUI. Captures screen regions via user selection, sends images to OpenRouter API (Gemini 3.5 Flash Lite, low reasoning by default) for OCR, and auto-copies results to clipboard with toast notifications. Includes a local 50-problem benchmark UI for comparing model output and latency. Supports 8 languages with runtime switching; new benchmark UI labels are English.
 
 ## Build & Run
 
@@ -26,9 +26,9 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 
 ## Architecture
 
-- `OCR/OCRApp.swift` — App entry point, `MenuBarExtra` menu bar UI, `AppDelegate` for activation policy & hotkey registration. Uses `@Environment(\.openSettings)` for programmatic settings open
+- `OCR/OCRApp.swift` — App entry point, `MenuBarExtra` menu bar UI, `AppDelegate` for activation policy & hotkey registration. The persistent status label observes settings requests using `@Environment(\.openSettings)`, including reopening the app without a visible window. Active benchmarks require confirmation before quitting.
 - `OCR/AppState.swift` — Singleton `ObservableObject` coordinating capture→OCR→clipboard flow. Settings stored in `UserDefaults`. Uses `shouldOpenSettings` flag to trigger settings from non-SwiftUI code
-  - Default model: `qwen/qwen3.8-flash`, with no routing suffix or provider override. One-time migration replaces saved previous Gemini defaults; custom model IDs and subsequent user choices are preserved.
+  - Default model: `google/gemini-3.5-flash-lite`, reasoning `low`, with no routing suffix or provider override. One-time migration replaces the previous Qwen default and legacy Gemini preview; custom model IDs and subsequent user choices are preserved.
 - `OCR/HotkeyManager.swift` — Global hotkey via Carbon `RegisterEventHotKey`. Converts between `NSEvent.ModifierFlags` and Carbon modifier constants
 - `OCR/ScreenCaptureOverlay.swift` — Full-screen transparent overlay windows for region selection. Uses ScreenCaptureKit (`SCScreenshotManager`) for capture. `OverlayWindow` subclass overrides `canBecomeKey` for keyboard events
 - `OCR/OpenRouterService.swift` — Sends base64-encoded PNG to `POST /api/v1/chat/completions` on OpenRouter
@@ -37,6 +37,11 @@ macOS menu bar OCR application built with SwiftUI. Captures screen regions via u
 - `OCR/ToastWindow.swift` — Floating `NSPanel` HUD for transient notifications (capture success, OCR complete, errors). Auto-dismisses with fade animation
 - `OCR/LocalizationManager.swift` — Singleton `ObservableObject` with embedded translation dictionaries. Call `lm.t("key")` or `lm.t("key", arg)` for localized strings. Language persisted in UserDefaults. Inject as `@EnvironmentObject` in SwiftUI views; access via `LocalizationManager.shared` in non-SwiftUI code
 - `OCR/OCR.entitlements` — App Sandbox with `com.apple.security.network.client` for API access
+- `OCR/ReasoningEffort.swift` and `OpenRouterStream.swift` — Typed reasoning/usage and bounded SSE decoding; benchmark requests stream visible content, are cancellable, and never retry. Preserve normal capture retry behavior separately.
+- `OCR/BenchmarkModels.swift`, `BenchmarkDataset.swift`, `BenchmarkScorer.swift` — Versioned run data, bundled 50-problem dataset, and deterministic offline scoring through a pinned JavaScriptCore Markdown parser. Treat model responses only as data. Bump dataset/evaluator IDs when their contracts change.
+- `OCR/BenchmarkRunner.swift`, `BenchmarkWindow.swift`, `BenchmarkStore.swift` — Explicit-start benchmark window, progress/live response, cancellation, result review, local opt-in history, JSON import/export and compatible-run comparison. The controller owns the global running flag; do not tie it to view visibility. History validation/scoring runs off the main actor.
+- `BenchmarkAssets/` — Public synthetic PNGs and expected answers, copied as an explicit folder resource. No Python runtime, historical research results, API keys, or private filesystem paths ship with the app. Markdown-it license is bundled.
+- Benchmarks use `Application Support/OCR/Benchmarks` inside the app sandbox. Import must validate size/schema/identities/timing/usage and rescore known datasets; unknown versions are inspectable but unverified. Only complete, verified runs with matching dataset, prompt, evaluator and transport may be compared.
 
 ## Release Packaging
 

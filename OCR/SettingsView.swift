@@ -7,6 +7,7 @@ struct SettingsView: View {
     @EnvironmentObject var lm: LocalizationManager
     @AppStorage("apiKey") private var apiKey = ""
     @AppStorage("modelId") private var modelId = AppState.defaultModelId
+    @AppStorage("reasoningEffort") private var reasoningEffort = "low"
     @State private var isRecordingHotkey = false
     @State private var hotkeyDisplay = ""
     @State private var monitor: Any?
@@ -23,6 +24,31 @@ struct SettingsView: View {
                     .textFieldStyle(.roundedBorder)
 
                 Text(lm.t("settings.model_hint"))
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+
+                Picker("Reasoning effort", selection: $reasoningEffort) {
+                    ForEach(ReasoningEffort.allCases) { effort in
+                        Text(effort.displayName).tag(effort.rawValue)
+                    }
+                }
+                .pickerStyle(.menu)
+
+                Text("Available efforts depend on the model. Gemini 3.5 Flash Lite does not support Off. Low is the app default.")
+                    .font(.caption)
+                    .foregroundColor(.secondary)
+            }
+
+            Section("Model Benchmark") {
+                Button("Run Benchmark…") {
+                    BenchmarkWindowController.shared.show(
+                        model: modelId,
+                        reasoning: ReasoningEffort(rawValue: reasoningEffort) ?? .low
+                    )
+                }
+                .disabled(appState.isCaptureActive)
+
+                Text("Compare models using 50 built-in OCR problems. A separate window shows live responses and progress. API charges apply only when you start a run.")
                     .font(.caption)
                     .foregroundColor(.secondary)
             }
@@ -77,7 +103,7 @@ struct SettingsView: View {
             }
         }
         .formStyle(.grouped)
-        .frame(width: 450, height: 450)
+        .frame(width: 540, height: 650)
         .onAppear {
             hotkeyDisplay = appState.hotkeyDisplayString
             launchAtLogin = SMAppService.mainApp.status == .enabled

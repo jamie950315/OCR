@@ -9,16 +9,17 @@ protocol CaptureOverlay: AnyObject {
 
 class AppState: ObservableObject {
     static let shared = AppState()
-    static let defaultModelId = "qwen/qwen3.8-flash"
+    static let defaultModelId = "google/gemini-3.5-flash-lite"
     private static let previousDefaultModelIds = [
         "google/gemini-3-flash-preview",
-        "google/gemini-3.5-flash-lite"
+        "qwen/qwen3.8-flash"
     ]
-    private static let modelMigrationKey = "modelIdMigratedToQwen38Flash"
+    private static let modelMigrationKey = "modelIdMigratedToGemini35Benchmark"
 
     @Published var isProcessing = false
     @Published var statusMessage: String?
     @Published var shouldOpenSettings = false
+    @Published var isBenchmarkRunning = false
 
     private let hotkeyManager = HotkeyManager()
     private let modelDefaults: UserDefaults
@@ -48,6 +49,13 @@ class AppState: ObservableObject {
         get { modelDefaults.string(forKey: "modelId") ?? Self.defaultModelId }
         set { modelDefaults.set(newValue, forKey: "modelId") }
     }
+
+    var reasoningEffort: ReasoningEffort {
+        get { ReasoningEffort(rawValue: modelDefaults.string(forKey: "reasoningEffort") ?? "low") ?? .low }
+        set { modelDefaults.set(newValue.rawValue, forKey: "reasoningEffort") }
+    }
+
+    var isCaptureActive: Bool { isProcessing || captureOverlay != nil }
 
     private func migrateDefaultModelIfNeeded() {
         guard !modelDefaults.bool(forKey: Self.modelMigrationKey) else { return }
@@ -112,7 +120,7 @@ class AppState: ObservableObject {
     // MARK: - Screen Capture
 
     func startCapture() {
-        guard !isProcessing, captureOverlay == nil else { return }
+        guard !isProcessing, !isBenchmarkRunning, captureOverlay == nil else { return }
         guard !apiKey.isEmpty else {
             statusMessage = LocalizationManager.shared.t("status.set_api_key")
             shouldOpenSettings = true
@@ -143,7 +151,8 @@ class AppState: ObservableObject {
                 let text = try await OpenRouterService.performOCR(
                     image: image,
                     apiKey: apiKey,
-                    model: modelId
+                    model: modelId,
+                    reasoning: reasoningEffort
                 )
 
                 await MainActor.run {

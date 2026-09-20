@@ -31,19 +31,20 @@ private func makeModelDefaults() -> (defaults: UserDefaults, suiteName: String) 
 }
 
 struct OCRTests {
-    @Test @MainActor func modelIDUsesQwen38FlashByDefault() {
+    @Test @MainActor func modelIDUsesGeminiFlashLiteByDefault() {
         let (defaults, suiteName) = makeModelDefaults()
         defer { defaults.removePersistentDomain(forName: suiteName) }
 
-        #expect(AppState(modelDefaults: defaults).modelId == "qwen/qwen3.8-flash")
+        #expect(AppState(modelDefaults: defaults).modelId == "google/gemini-3.5-flash-lite")
     }
 
-    @Test(arguments: ["google/gemini-3-flash-preview", "google/gemini-3.5-flash-lite"])
-    @MainActor func modelIDMigratesPreviousDefaultsToQwen38Flash(previousModel: String) {
+    @Test(arguments: ["google/gemini-3-flash-preview", "qwen/qwen3.8-flash"])
+    @MainActor func modelIDMigratesPreviousDefaultsToGemini(previousModel: String) {
         let (defaults, suiteName) = makeModelDefaults()
         defer { defaults.removePersistentDomain(forName: suiteName) }
         defaults.set(previousModel, forKey: "modelId")
         defaults.set(true, forKey: "modelIdMigratedToGemini35FlashLite")
+        defaults.set(true, forKey: "modelIdMigratedToQwen38Flash")
 
         _ = AppState(modelDefaults: defaults)
 
@@ -59,7 +60,7 @@ struct OCRTests {
         #expect(AppState(modelDefaults: defaults).modelId == customModelID)
     }
 
-    @Test(arguments: ["google/gemini-3-flash-preview", "google/gemini-3.5-flash-lite"])
+    @Test(arguments: ["google/gemini-3-flash-preview", "qwen/qwen3.8-flash"])
     @MainActor func modelIDAllowsChoosingPreviousModelsAfterMigration(previousModel: String) {
         let (defaults, suiteName) = makeModelDefaults()
         defer { defaults.removePersistentDomain(forName: suiteName) }
@@ -94,5 +95,24 @@ struct OCRTests {
         appState.startCapture()
 
         #expect(overlay.showCount == 2)
+    }
+
+    @Test @MainActor func reasoningDefaultsToLowAndPersistsChoice() {
+        let (defaults, suiteName) = makeModelDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let state = AppState(modelDefaults: defaults)
+        #expect(state.reasoningEffort == .low)
+        state.reasoningEffort = .off
+        #expect(AppState(modelDefaults: defaults).reasoningEffort == .off)
+    }
+
+    @Test @MainActor func benchmarkPreventsSimultaneousScreenCapture() {
+        let (defaults, suiteName) = makeModelDefaults()
+        defer { defaults.removePersistentDomain(forName: suiteName) }
+        let overlay = TestCaptureOverlay()
+        let state = AppState(modelDefaults: defaults, captureOverlayFactory: { overlay })
+        state.isBenchmarkRunning = true
+        state.startCapture()
+        #expect(overlay.showCount == 0)
     }
 }
